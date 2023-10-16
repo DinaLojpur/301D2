@@ -4,7 +4,7 @@ import { useApolloClient } from "@apollo/client";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
-//import BackgroundImage from '../../assets/images/bg/login-bg.png'
+import BackgroundImage from '../../assets/images/bg/login-bg.png'
 //import LoginLogo from '../../assets/images/bg/login-logo.png'
 import { LOGIN_MUTATION } from "../../utils/graphqlQueries";
 import { errorNotification } from "../../utils";
@@ -50,7 +50,7 @@ const LoginFormik = () => {
     
 
   return (
-    <div className="loginBox" /*style={{ backgroundImage: `url(${BackgroundImage})` }}*/>
+    <div className="loginBox" style={{ backgroundImage: `url(${BackgroundImage})` }}>
 
       <Container fluid className="h-100">
         <Row className="justify-content-center align-items-center h-100">

@@ -2,7 +2,6 @@ import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import Loadable from '../layouts/loader/Loadable';
 import Register from '../views/auth/Register';
-import Login from '../views/auth/Login';
 /****Layouts*****/
 
 const FullLayout = Loadable(lazy(() => import('../layouts/FullLayout')));
@@ -221,7 +220,7 @@ const ThemeRoutes = [
       { path: 'registerformik', element: <RegisterFormik /> },
       { path: 'register', element: <Register /> },
       { path: 'loginformik', element: <LoginFormik /> },
-      { path: 'login', element: <Login /> },
+      { path: 'login', element: <LoginFormik /> },
       { path: 'maintanance', element: <Maintanance /> },
       { path: 'lockscreen', element: <LockScreen /> },
       { path: 'recoverpwd', element: <RecoverPassword /> },

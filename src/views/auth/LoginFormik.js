@@ -114,7 +114,7 @@ const LoginFormik = () => {
                     </Form>
                   )}
                 />
-                  <h6 className='text-center fw-normal mb-n2'>Don&apos;t have an account? <Link to="/auth/registerformik">Register</Link></h6>
+                  <h6 className='text-center fw-normal mb-n2'>Don&apos;t have an account? <Link to="/auth/register">Register</Link></h6>
               </CardBody>
             </Card>
           </Col>

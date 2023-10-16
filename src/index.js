@@ -1,22 +1,39 @@
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/no-named-as-default */
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { createUploadLink } from "apollo-upload-client";
 import reportWebVitals from './reportWebVitals';
 import { store } from './store/Store';
 import App from './App';
 import './data';
 
-const container = document.getElementById('root');
-const root = createRoot(container);
+const token = localStorage.getItem("TOKEN");
+const uploadLink = createUploadLink({
+  uri: process.env.REACT_APP_API_URL || "http://localhost:4000/",
+  headers: {
+    "keep-alive": "true",
+    Authorization: token ? `Bearer ${token}` : ""
+  }
+});
+
+const client = new ApolloClient({
+  cache: new InMemoryCache({ addTypename: false }),
+  link: uploadLink
+});
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ApolloProvider>
   </Provider>,
 );
 

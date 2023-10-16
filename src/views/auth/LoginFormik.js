@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Label, FormGroup, Container, Row, Col, Card, CardBody, Input } from 'reactstrap';
+import { Button, Label, FormGroup, Container, Row, Col, Card, CardBody } from 'reactstrap';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
@@ -32,10 +32,7 @@ const LoginFormik = () => {
             <AuthLogo />
             <Card>
               <CardBody className="p-4 m-1">
-                <h5 className="mb-0">Login</h5>
-                <small className="pb-4 d-block">
-                  Do not have an account? <Link to="/auth/registerformik">Sign Up</Link>
-                </small>
+                <h5 className="mb-0 text-center">Login</h5>
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -72,20 +69,22 @@ const LoginFormik = () => {
                           className="invalid-feedback"
                         />
                       </FormGroup>
-                      <FormGroup className="form-check d-flex" inline>
-                        <Label check>
-                          <Input type="checkbox" />
-                          Remember me
-                        </Label>
-                        <Link className="ms-auto text-decoration-none" to="/auth/forgotPwd">
-                          <small>Forgot Pwd?</small>
+                      <FormGroup className="d-flex justify-content-between">
+                        <Link to="/auth/forgotPwd" className="text-decoration-none">
+                          <small>Account not verified?</small>
+                        </Link>
+                        <Link to="/auth/forgotPwd" className="text-decoration-none">
+                          <small>Forgot password</small>
                         </Link>
                       </FormGroup>
-                      <FormGroup>
+                      <FormGroup className="d-flex justify-content-center">
                         <Button type="submit" color="primary" className="me-2">
                           Login
                         </Button>
                       </FormGroup>
+                      <small className="pb-4 d-block text-center">
+                        No account yet? <Link to="/auth/registerformik">Register</Link>
+                      </small>
                     </Form>
                   )}
                 />

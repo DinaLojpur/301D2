@@ -48,6 +48,7 @@ const SidebarData = [
       },
     ],
   },
+  {/*
   { caption: 'Apps' },
   {
     title: 'Notes',
@@ -462,8 +463,30 @@ const SidebarData = [
         href: '/auth/404',
         icon: <Icon.Disc />,
       },
+      
     ],
   },
+  */},
+  {
+    title: 'User Account',
+    href: '/auth',
+    icon: <Icon.Lock />,
+    id: 6.5,
+    collapisble: true,
+    children: [
+      {
+        title: 'Login',
+        href: '/auth/login',
+        icon: <Icon.Disc />,
+      },
+      {
+        title: 'Register',
+        href: '/auth/register',
+        icon: <Icon.Disc />,
+      },
+    ]
+  },
+  {/* 
   {
     title: 'DD Menu',
     href: '/',
@@ -495,6 +518,7 @@ const SidebarData = [
       },
     ],
   },
+  */},
 ];
 
 export default SidebarData;

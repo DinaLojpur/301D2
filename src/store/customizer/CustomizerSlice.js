@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  topbarBg: 'primary',
+  topbarBg: 'white',  // top bar colour
   customizerSidebar: false,
   isRTL: false,
   isDark: false,
   isMiniSidebar: false,
-  sidebarBg: 'white',
+  sidebarBg: 'info', // teal/blue colour
   isTopbarFixed: true,
   isMobileSidebar: false,
   isSidebarFixed: true,

@@ -3,14 +3,15 @@ import { Button, Label, FormGroup, Container, Row, Col, Card, CardBody } from 'r
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
-import AuthLogo from "../../layouts/logo/AuthLogo";
-import { ReactComponent as LeftBg } from '../../assets/images/bg/login-bgleft.svg';
-import { ReactComponent as RightBg } from '../../assets/images/bg/login-bg-right.svg';
 
 const RegisterFormik = () => {
   const initialValues = {
     UserName: '',
     email: '',
+    contactPhone: '',
+    address: '',
+    country: '',
+    company: '',
     password: '',
     confirmPassword: '',
     acceptTerms: false,
@@ -30,18 +31,12 @@ const RegisterFormik = () => {
 
   return (
     <div className="loginBox">
-      <LeftBg className="position-absolute left bottom-0" />
-      <RightBg className="position-absolute end-0 top" />
       <Container fluid className="h-100">
         <Row className="justify-content-center align-items-center h-100">
           <Col lg="12" className="loginContainer">
-            <AuthLogo />
-            <Card>
+            <Card style={{ maxWidth: '500px' }}>
               <CardBody className="p-4 m-1">
-                <h5 className="mb-0">Register</h5>
-                <small className="pb-4 d-block">
-                  Already have an account? <Link to="/auth/loginformik">Login</Link>
-                </small>
+                <h5 className="mb-0 text-center">Register</h5>
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -52,7 +47,7 @@ const RegisterFormik = () => {
                   render={({ errors, touched }) => (
                     <Form>
                       <FormGroup>
-                        <Label htmlFor="firstName">User Name</Label>
+                        <Label htmlFor="firstName">Name</Label>
                         <Field
                           name="UserName"
                           type="text"
@@ -77,6 +72,53 @@ const RegisterFormik = () => {
                           }`}
                         />
                         <ErrorMessage name="email" component="div" className="invalid-feedback" />
+                      </FormGroup>
+                      <FormGroup>
+                        <Label htmlFor="contactPhone">Contact Phone</Label>
+                        <Field
+                          name="contactPhone"
+                          type="text"
+                          className={`form-control${
+                            errors.contactPhone && touched.contactPhone ? ' is-invalid' : ''
+                          }`}
+                        />
+                        <ErrorMessage name="contactPhone" component="div" className="invalid-feedback" />
+                      </FormGroup>
+
+                      <FormGroup>
+                        <Label htmlFor="address">Address</Label>
+                        <Field
+                          name="address"
+                          type="text"
+                          className={`form-control${
+                            errors.address && touched.address ? ' is-invalid' : ''
+                          }`}
+                        />
+                        <ErrorMessage name="address" component="div" className="invalid-feedback" />
+                      </FormGroup>
+
+                      <FormGroup>
+                        <Label htmlFor="country">Country</Label>
+                        <Field
+                          name="country"
+                          type="text"
+                          className={`form-control${
+                            errors.country && touched.country ? ' is-invalid' : ''
+                          }`}
+                        />
+                        <ErrorMessage name="country" component="div" className="invalid-feedback" />
+                      </FormGroup>
+
+                      <FormGroup>
+                        <Label htmlFor="company">Company</Label>
+                        <Field
+                          name="company"
+                          type="text"
+                          className={`form-control${
+                            errors.company && touched.company ? ' is-invalid' : ''
+                          }`}
+                        />
+                        <ErrorMessage name="company" component="div" className="invalid-feedback" />
                       </FormGroup>
                       <FormGroup>
                         <Label htmlFor="password">Password</Label>
@@ -118,7 +160,7 @@ const RegisterFormik = () => {
                           }`}
                         />
                         <Label htmlFor="acceptTerms" className="form-check-label">
-                          Accept Terms & Conditions
+                        I agree to the Terms of Service and Privacy Policy
                         </Label>
                         <ErrorMessage
                           name="acceptTerms"
@@ -126,14 +168,14 @@ const RegisterFormik = () => {
                           className="invalid-feedback"
                         />
                       </FormGroup>
-                      <FormGroup>
-                        <Button type="submit" color="primary" className="me-2">
+                      <FormGroup className="d-flex justify-content-center">
+                        <Button type="submit" color="info" className="me-2">
                           Register
                         </Button>
-                        <Button type="reset" color="secondary">
-                          Reset
-                        </Button>
                       </FormGroup>
+                      <small className="pb-4 d-block text-center">
+                        Already have an account? <Link to="/auth/loginformik">Login</Link>
+                      </small>
                     </Form>
                   )}
                 />

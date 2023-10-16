@@ -1,14 +1,20 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { Button, Label, FormGroup, Container, Row, Col, Card, CardBody } from 'reactstrap';
+import { useApolloClient } from "@apollo/client";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
-import AuthLogo from "../../layouts/logo/AuthLogo";
-import { ReactComponent as LeftBg } from '../../assets/images/bg/login-bgleft.svg';
-import { ReactComponent as RightBg } from '../../assets/images/bg/login-bg-right.svg';
+import { Link } from 'react-router-dom';
+//import BackgroundImage from '../../assets/images/bg/login-bg.png'
+//import LoginLogo from '../../assets/images/bg/login-logo.png'
+import { LOGIN_MUTATION } from "../../utils/graphqlQueries";
+import { errorNotification } from "../../utils";
+
+
 
 const LoginFormik = () => {
-  const navigate = useNavigate();
+  const client = useApolloClient();
+  const [credentials, setCredentials] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     email: '',
@@ -22,26 +28,41 @@ const LoginFormik = () => {
       .required('Password is required'),
   });
 
+  const handleLogin = () => {
+    setLoading(true);
+    client
+      .mutate({
+        mutation: LOGIN_MUTATION,
+        variables: credentials
+      })
+      .then(({ data }) => {
+        setLoading(false);
+        localStorage.setItem("TOKEN", data.login.token);
+        localStorage.setItem("USER", JSON.stringify(data.login.user));
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+        errorNotification("Error", err.message);
+      });
+    };
+    
+
   return (
-    <div className="loginBox">
-      <LeftBg className="position-absolute left bottom-0" />
-      <RightBg className="position-absolute end-0 top" />
+    <div className="loginBox" /*style={{ backgroundImage: `url(${BackgroundImage})` }}*/>
+
       <Container fluid className="h-100">
         <Row className="justify-content-center align-items-center h-100">
           <Col lg="12" className="loginContainer">
-            <AuthLogo />
             <Card>
               <CardBody className="p-4 m-1">
-                <h5 className="mb-0 text-center">Login</h5>
+                <h4 className="mb-4 text-center">Login</h4>
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
-                  onSubmit={(fields) => {
-                    // eslint-disable-next-line no-alert
-                    alert(`SUCCESS!! :-)\n\n${JSON.stringify(fields, null, 4)}`);
-                    navigate('/');
-                  }}
-                  render={({ errors, touched }) => (
+                  onSubmit={handleLogin}
+                  render={({ errors, touched, handleChange }) => (
                     <Form>
                       <FormGroup>
                         <Label htmlFor="email">Email</Label>
@@ -51,6 +72,10 @@ const LoginFormik = () => {
                           className={`form-control${
                             errors.email && touched.email ? ' is-invalid' : ''
                           }`}
+                          placeholder="Enter Business Email"
+                          onChange={(e) => {
+                            handleChange(e);
+                            setCredentials({ ...credentials, email: e.target.value });}}
                         />
                         <ErrorMessage name="email" component="div" className="invalid-feedback" />
                       </FormGroup>
@@ -62,6 +87,11 @@ const LoginFormik = () => {
                           className={`form-control${
                             errors.password && touched.password ? ' is-invalid' : ''
                           }`}
+                          placeholder="Enter Password"
+                          onChange={(e) => {
+                            handleChange(e);
+                            setCredentials({ ...credentials, password: e.target.value });
+                          }}
                         />
                         <ErrorMessage
                           name="password"
@@ -69,25 +99,22 @@ const LoginFormik = () => {
                           className="invalid-feedback"
                         />
                       </FormGroup>
-                      <FormGroup className="d-flex justify-content-between">
-                        <Link to="/auth/forgotPwd" className="text-decoration-none">
-                          <small>Account not verified?</small>
-                        </Link>
-                        <Link to="/auth/forgotPwd" className="text-decoration-none">
-                          <small>Forgot password</small>
+                      <FormGroup className="form-check d-flex" inline>
+                        <Link className="ms-auto text-decoration-none" to="/auth/forgotPwd">
+                          <small>Forgot Password?</small>
                         </Link>
                       </FormGroup>
-                      <FormGroup className="d-flex justify-content-center">
-                        <Button type="submit" color="primary" className="me-2">
-                          Login
-                        </Button>
+                      <FormGroup>
+                        <div className='d-grid gap-2'>
+                          <Button type="submit" color="primary" className="btn" loading={loading}>
+                            Login
+                          </Button>
+                        </div>
                       </FormGroup>
-                      <small className="pb-4 d-block text-center">
-                        No account yet? <Link to="/auth/registerformik">Register</Link>
-                      </small>
                     </Form>
                   )}
                 />
+                  <h6 className='text-center fw-normal mb-n2'>Don&apos;t have an account? <Link to="/auth/registerformik">Register</Link></h6>
               </CardBody>
             </Card>
           </Col>

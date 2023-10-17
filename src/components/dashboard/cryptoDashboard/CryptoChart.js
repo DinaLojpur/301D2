@@ -74,7 +74,7 @@ const CryptoChart = () => {
   const seriescryptocharts = [
     {
       name: 'Scans',
-      data: [0, 80, 40, 100, 30, 150, 80, 300, 250]
+      data: [0, 80, 40, 100, 30, 150, 80, 300, 250, 120, 80, 100]
     }
   ];
   return (

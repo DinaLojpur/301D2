@@ -19,7 +19,7 @@ const SidebarData = [
         collapisble: false,
       },
       {
-        title: 'Crypto',
+        title: '0 Barriers Foundation',
         href: '/dashboards/crypto',
         icon: <Icon.Disc />,
         id: 1.2,

@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@apollo/client": "^3.8.5",
+    "@apollo/client": "^3.8.6",
     "@blueprintjs/core": "^5.0.1",
     "@casl/ability": "^6.5.0",
     "@casl/react": "^3.1.0",

@@ -109,7 +109,7 @@ const ThemeRoutes = [
     path: '/',
     element: <FullLayout />,
     children: [
-      { path: '/', name: 'Home', element: <Navigate to="/dashboards/classic" /> },
+      { path: '/', name: 'Home', element: <Navigate to="/dashboards/crypto" /> },
       { path: '/dashboards/classic', name: 'Classic', exact: true, element: <Classic /> },
       { path: '/dashboards/crypto', name: 'Classic', exact: true, element: <Crypto /> },
       { path: '/dashboards/ecommerce', name: 'ecommerce', exact: true, element: <Ecommerce /> },

@@ -1,9 +1,16 @@
 import React from 'react';
 import { DropdownItem } from 'reactstrap';
 import { User, FileText, Star, Settings, Droplet } from 'react-feather';
+import { useNavigate } from 'react-router-dom';
 import user1 from '../../assets/images/users/user1.jpg';
 
 const ProfileDD = () => {
+  const navigate = useNavigate(); // Get the navigation function
+
+  const goToTabs = () => {
+    navigate('/ui/tabs'); // Navigate to the Tabs page when the "Settings" option is clicked
+  };
+
   return (
     <div>
       <div className="d-flex gap-3 p-3 border-bottom pt-2 align-items-center">
@@ -30,7 +37,7 @@ const ProfileDD = () => {
         &nbsp; Customize
       </DropdownItem>
       <DropdownItem divider />
-      <DropdownItem className="px-4 py-3">
+      <DropdownItem className="px-4 py-3" onClick={goToTabs}>
         <Settings size={20} />
         &nbsp; Settings
       </DropdownItem>

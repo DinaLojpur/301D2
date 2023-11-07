@@ -8,8 +8,10 @@ import {
   successNotification,
   errorNotification
 } from "../../utils";
+import CountrySelect from "./CountrySelect";
 import { REGISTER_USER_MUTATION } from "../../utils/graphqlQueries";
-import BackgroundImage from '../../assets/images/bg/login-bg.png'
+import { ReactComponent as LeftBg } from '../../assets/images/bg/login-bgleft.svg';
+import { ReactComponent as RightBg } from '../../assets/images/bg/login-bg-right.svg';
 
 export default function Register() {
   const client = useApolloClient();
@@ -39,10 +41,13 @@ export default function Register() {
         errorNotification("Error", err.message);
       });
   };
-  
+
+  const [selectedCountryCode, setSelectedCountryCode] = useState(null);
 
   return (
-    <div className="loginBox" style={{ backgroundImage: `url(${BackgroundImage})` }}>
+    <div className="loginBox">
+        <LeftBg className="position-absolute left bottom-0" />
+        <RightBg className="position-absolute end-0 top" />
         <Container fluid className="h-100 d-flex justify-content-center align-items-center">
             <div className="row">
                 <div className="col-md-12 mx-auto px-4">
@@ -57,11 +62,30 @@ export default function Register() {
                     className="px-4 pt-4 pb-2 border rounded bg-white shadow"
                 >
                     <h4 className="text-center mb-0">Register</h4>
-                    <Form.Item name="name" label="Name">
+                    
+                    <Form.Item name="firstName" label="First Name">
                     <Input
                         required
                         autoFocus
-                        placeholder="Enter your name"
+                        placeholder="Enter your first name"
+                        maxLength={50}
+                    />
+                    </Form.Item>
+                    
+                    <Form.Item name="lastName" label="Last Name">
+                    <Input
+                        required
+                        autoFocus
+                        placeholder="Enter your last name"
+                        maxLength={50}
+                    />
+                    </Form.Item>
+                    
+                    <Form.Item name="userName" label="Username">
+                    <Input
+                        required
+                        autoFocus
+                        placeholder="Enter your username"
                         maxLength={50}
                     />
                     </Form.Item>
@@ -82,10 +106,18 @@ export default function Register() {
                     >
                     <Input
                         required
-                        placeholder="Enter your business email"
+                        placeholder="Corporate email"
                         maxLength={50}
                     />
                     </Form.Item>
+
+                    <Form.Item name="countryCode" label="Country Code">
+                    <CountrySelect
+                        value={selectedCountryCode}
+                        onChange={(value) => setSelectedCountryCode(value)}
+                    />
+                    </Form.Item>
+                    
                     <Form.Item name="phone" label="Contact Phone">
                     <Input
                         type="tel"
@@ -94,15 +126,11 @@ export default function Register() {
                         maxLength={20}
                     />
                     </Form.Item>
-                    <Form.Item name="address" label="Address">
-                    <Input required placeholder="Enter your address" maxLength={100} />
-                    </Form.Item>
-                    <Form.Item name="country" label="Country">
-                    <Input required placeholder="Enter your country" maxLength={50} />
-                    </Form.Item>
+                    
                     <Form.Item name="company" label="Company">
                     <Input required placeholder="Enter your company" maxLength={50} />
                     </Form.Item>
+                    
                     <Form.Item name="password" label="Password">
                     <Input.Password
                         required
@@ -110,6 +138,7 @@ export default function Register() {
                         maxLength={50}
                     />
                     </Form.Item>
+                    
                     <Form.Item
                     name="confirmPassword"
                     label="Confirm Password"
@@ -131,6 +160,7 @@ export default function Register() {
                         maxLength={50}
                     />
                     </Form.Item>
+                    
                     {/* form item with checkbox */}
                     <Form.Item className="text-center mt-1 mb-1">
                     <Checkbox required>

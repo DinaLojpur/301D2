@@ -468,21 +468,78 @@ const SidebarData = [
   },
   */},
   {
+    title: 'Scans',
+    href: '/scans',
+    icon: <Icon.Code />,
+    id: 6.5,
+    collapisble: true,
+    children: [
+      {
+        title: 'Scans',
+        href: '/scans/scans',
+        icon: <Icon.Play />,
+      },
+      {
+        title: 'PDF Accessibility',
+        href: '/scans/pdfaccessibility',
+        icon: <Icon.FileText />,
+      },
+    ]
+  },
+  {
+    title: 'Help',
+    href: '/help',
+    icon: <Icon.HelpCircle />,
+    id: 6.5,
+    collapsible: true,
+    children: [
+      {
+        title: 'Documentation',
+        href: '/help/documentation',
+        icon: <Icon.Info />,
+      },
+      {
+        title: 'Contact Us',
+        href: '/help/contactus',
+        icon: <Icon.AlertCircle />,
+      },
+    ]
+  },
+  {
+    title: 'Admin',
+    href: '/admin',
+    icon: <Icon.Lock />,
+    id: 6.5,
+    collapisble: true,
+    children: [
+      {
+        title: 'Projects',
+        href: '/admin/projects',
+        icon: <Icon.Database />,
+      },
+      {
+        title: 'Users',
+        href: '/admin/users',
+        icon: <Icon.Users />,
+      },
+    ]
+  },
+  {
     title: 'User Account',
     href: '/auth',
-    icon: <Icon.Lock />,
+    icon: <Icon.User />,
     id: 6.5,
     collapisble: true,
     children: [
       {
         title: 'Login',
         href: '/auth/login',
-        icon: <Icon.Disc />,
+        icon: <Icon.LogIn />,
       },
       {
         title: 'Register',
         href: '/auth/register',
-        icon: <Icon.Disc />,
+        icon: <Icon.UserPlus />,
       },
     ]
   },

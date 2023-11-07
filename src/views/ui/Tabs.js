@@ -12,6 +12,7 @@ import {
 import ComponentCard from '../../components/ComponentCard';
 
 import AccountSettingsComponent from '../settings/AccountSettings';
+import PersonalSettingsComponent from '../settings/PersonalSettings';
 
 const JumbotronComponent = () => {
   const [activeTab, setActiveTab] = useState('1');
@@ -47,11 +48,7 @@ const JumbotronComponent = () => {
         </Nav>
         <TabContent className="p-4" activeTab={activeTab}>
           <TabPane tabId="1">
-            <Row>
-              <Col sm="12">
-                <h4>Tab 1 Contents</h4>
-              </Col>
-            </Row>
+            <PersonalSettingsComponent />
           </TabPane>
           <TabPane tabId="2">
             <Row>

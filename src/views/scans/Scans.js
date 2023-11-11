@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     Form,
     Input,
@@ -17,6 +17,7 @@ import {
     // PaginationLink
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
+import NewScan from './NewScan'; // Import the NewCard component
 import ComponentCard from '../../components/ComponentCard';
 
 
@@ -31,9 +32,14 @@ const Scans = () => {
     // const onProjectChange = () => {
 
     // };
+    const [isNewScanOpen, setNewScanOpen] = useState(false);
+
+    const toggleNewScan = () => {
+        setNewScanOpen(!isNewScanOpen);
+    };
 
     const openNew = () => {
-
+        setNewScanOpen(true);
     };
 
     const deleteSelectedScans = () => {
@@ -109,8 +115,9 @@ const Scans = () => {
                         </div>
                         </Form>
                         <Button color='info' onClick={openNew} className='text-center m-1'>
-                            <Icon icon='plus' color='white' />New
+                            <Icon icon='plus' color='white' /> New
                         </Button>
+                        <NewScan isOpen={isNewScanOpen} toggle={toggleNewScan} />
                         <UncontrolledDropdown className='text-center m-1'>
                             <DropdownToggle caret color='info'>
                             Select Action
@@ -121,10 +128,10 @@ const Scans = () => {
                             </DropdownMenu>
                         </UncontrolledDropdown>
                         <Button color='info' onClick={deleteSelectedScans} className='text-center m-1'>
-                            <Icon icon='refresh' color='white' />Refresh
+                            <Icon icon='refresh' color='white' /> Refresh
                         </Button>
                         <Button color='info' className='text-center m-1'>
-                            <Icon icon='export' color='white' />Export
+                            <Icon icon='export' color='white' /> Export
                         </Button>
                     </ButtonToolbar>
                     </div>

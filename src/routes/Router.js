@@ -240,7 +240,7 @@ const ThemeRoutes = [
   },
   {
     path: '/scans',
-    element: <BlankLayout />,
+    element: <FullLayout />,
     children: [
       { path: '404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
@@ -250,7 +250,7 @@ const ThemeRoutes = [
   },
   {
     path: '/help',
-    element: <BlankLayout />,
+    element: <FullLayout />,
     children: [
       { path: '404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
@@ -260,7 +260,7 @@ const ThemeRoutes = [
   },
   {
     path: '/admin',
-    element: <BlankLayout />,
+    element: <FullLayout />,
     children: [
       { path: '404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },

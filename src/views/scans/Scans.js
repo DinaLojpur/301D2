@@ -17,7 +17,8 @@ import {
     // PaginationLink
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
-import NewScan from './NewScan'; // Import the NewCard component
+import NewScan from './NewScan';
+import ScheduleScan from './ScheduleScan';
 import ComponentCard from '../../components/ComponentCard';
 
 
@@ -33,6 +34,7 @@ const Scans = () => {
 
     // };
     const [isNewScanOpen, setNewScanOpen] = useState(false);
+    const [isScheduleScanOpen, setScheduleScanOpen] = useState(false);
 
     const toggleNewScan = () => {
         setNewScanOpen(!isNewScanOpen);
@@ -40,6 +42,14 @@ const Scans = () => {
 
     const openNew = () => {
         setNewScanOpen(true);
+    };
+
+    const toggleScheduleScan = () => {
+        setScheduleScanOpen(!isScheduleScanOpen);
+    };
+
+    const openSchedule = () => {
+        setScheduleScanOpen(true);
     };
 
     const deleteSelectedScans = () => {
@@ -124,9 +134,10 @@ const Scans = () => {
                             </DropdownToggle>
                             <DropdownMenu>
                             <DropdownItem>Run Scan</DropdownItem>
-                            <DropdownItem>Schedule Scan</DropdownItem>
+                            <DropdownItem onClick={openSchedule}>Schedule Scan</DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
+                        <ScheduleScan isOpen={isScheduleScanOpen} toggle={toggleScheduleScan} />
                         <Button color='info' onClick={deleteSelectedScans} className='text-center m-1'>
                             <Icon icon='refresh' color='white' /> Refresh
                         </Button>

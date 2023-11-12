@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Card, CardBody, Input, Label, FormGroup, Row, Col } from 'reactstrap';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const ScheduleScan = ({ isOpen, toggle }) => {
-  const [scheduledDate, setScheduledDate] = useState(null);
+
+const RunScan = ({ isOpen, toggle }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
-
-  const handleDateChange = (date) => {
-    setScheduledDate(date);
-  };
 
   const handleCheckboxChange = (event, itemName) => {
     const { checked } = event.target;
     if (itemName === 'Select All') {
       setSelectAll(checked);
-      setSelectedItems(checked ? ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'] : []);
+      setSelectedItems(checked ? ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7'] : []);
     } else {
       const updatedItems = checked
         ? [...selectedItems, itemName]
@@ -28,22 +23,8 @@ const ScheduleScan = ({ isOpen, toggle }) => {
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg" centered>
-      <ModalHeader>Schedule Scan</ModalHeader>
+      <ModalHeader>Run Scan</ModalHeader>
       <ModalBody>
-        <FormGroup>
-          <Label for="scheduledDate">Scheduled Date:</Label>
-          <DatePicker
-            id="scheduledDate"
-            selected={scheduledDate}
-            onChange={handleDateChange}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            dateFormat="MM/dd/yyyy h:mm aa"
-            timeCaption="Time"
-          />
-        </FormGroup>
-
         <Row>
           <Col md="6">
             <Label>Select URLs:</Label>
@@ -59,7 +40,7 @@ const ScheduleScan = ({ isOpen, toggle }) => {
                     All
                   </Label>
                 </FormGroup>
-                {['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'].map((item) => (
+                {['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7'].map((item) => (
                   <FormGroup check key={item}>
                     <Label check>
                       <Input
@@ -92,7 +73,7 @@ const ScheduleScan = ({ isOpen, toggle }) => {
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={toggle}>
-          Schedule
+            Start Scan
         </Button>{' '}
         <Button color="secondary" onClick={toggle}>
           Cancel
@@ -102,11 +83,12 @@ const ScheduleScan = ({ isOpen, toggle }) => {
   );
 };
 
-ScheduleScan.propTypes = {
+RunScan.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
 };
 
-export default ScheduleScan;
+export default RunScan;
+
 
 

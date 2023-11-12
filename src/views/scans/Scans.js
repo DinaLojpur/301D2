@@ -18,8 +18,10 @@ import {
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
 import NewScan from './NewScan';
+import RunScan from './RunScan';
 import ScheduleScan from './ScheduleScan';
 import ComponentCard from '../../components/ComponentCard';
+
 
 
 const Scans = () => {
@@ -35,6 +37,7 @@ const Scans = () => {
     // };
     const [isNewScanOpen, setNewScanOpen] = useState(false);
     const [isScheduleScanOpen, setScheduleScanOpen] = useState(false);
+    const [isRunScanOpen, setRunScanOpen] = useState(false);
 
     const toggleNewScan = () => {
         setNewScanOpen(!isNewScanOpen);
@@ -42,6 +45,14 @@ const Scans = () => {
 
     const openNew = () => {
         setNewScanOpen(true);
+    };
+
+    const toggleRunScan = () => {
+        setRunScanOpen(!isRunScanOpen);
+    };
+
+    const openRun = () => {
+        setRunScanOpen(true);
     };
 
     const toggleScheduleScan = () => {
@@ -133,10 +144,11 @@ const Scans = () => {
                             Select Action
                             </DropdownToggle>
                             <DropdownMenu>
-                            <DropdownItem>Run Scan</DropdownItem>
+                            <DropdownItem onClick={openRun}>Run Scan</DropdownItem>
                             <DropdownItem onClick={openSchedule}>Schedule Scan</DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
+                        <RunScan isOpen={isRunScanOpen} toggle={toggleRunScan} />
                         <ScheduleScan isOpen={isScheduleScanOpen} toggle={toggleScheduleScan} />
                         <Button color='info' onClick={deleteSelectedScans} className='text-center m-1'>
                             <Icon icon='refresh' color='white' /> Refresh

@@ -141,7 +141,7 @@ const Scans = () => {
                         <NewScan isOpen={isNewScanOpen} toggle={toggleNewScan} />
                         <UncontrolledDropdown className='text-center m-1'>
                             <DropdownToggle caret color='info'>
-                            Select Action
+                                Select Action 
                             </DropdownToggle>
                             <DropdownMenu>
                             <DropdownItem onClick={openRun}>Run Scan</DropdownItem>
@@ -173,7 +173,7 @@ const Scans = () => {
                         <th>Scan Name</th>
                         <th>URL</th>
                         <th>Depth</th>
-                        <th>Guidance</th>
+                        <th>Guidances</th>
                         <th>Last Scan On</th>
                         <th>Next Scheduled On</th>
                     </tr>

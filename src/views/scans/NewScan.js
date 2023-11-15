@@ -16,13 +16,13 @@ const NewScan = ({ isOpen, toggle }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [guidanceLevels, setGuidanceLevels] = useState([]);
   const [selectedGuidances, setSelectedGuidances] = useState([]);
-  //const [deviceOptions, setDeviceOptions] = useState([]);
+  const [deviceOptions, setDeviceOptions] = useState([]);
 
   useEffect(() => {
     const fetchGuidanceLevels = async () => {
       try {
         const response = await axios.get('http://localhost:3000/guidance-levels'); // replace with actual endpoint
-        setGuidanceLevels(response.data); // assuming the response contains an array of guidance levels
+        setGuidanceLevels(response.data.guidance_levels); // assuming the response contains an array of guidance levels
       } catch (error) {
         console.error('Error fetching guidance levels:', error);
       }
@@ -31,11 +31,24 @@ const NewScan = ({ isOpen, toggle }) => {
     fetchGuidanceLevels();
   }, []);
 
+  useEffect(() => {
+    const fetchDeviceOptions = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/device-configs'); // replace with actual endpoint)
+        setDeviceOptions(response.data.name); // assuming the response contains an array of guidance levels
+      } catch (error) {
+        console.error('Error fetching guidance levels:', error);
+      }
+    };
+  
+    fetchDeviceOptions();
+  }, []);
+
   const handleCheckboxChange = (event, itemName) => {
     const { checked } = event.target;
     if (itemName === 'Select All') {
       setSelectAll(checked);
-      setSelectedGuidances(checked ? guidanceLevels : []);
+      setSelectedGuidances(checked ? guidanceLevels.map(item => item) : []);
     } else {
       const updatedItems = checked
         ? [...selectedGuidances, itemName]
@@ -44,19 +57,18 @@ const NewScan = ({ isOpen, toggle }) => {
     }
   };
 
-
   // function to handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
-    // perform actions with the form data here
+
     try {
         const scanRequest = {
           scan_url: values.url,
+          device_config: values.device,
           depth: values.depth,
           guidance: selectedGuidances,
-          device_config: values.device,
         };
   
-        // Send the scan request to your MongoDB endpoint
+        // send the scan request to MongoDB endpoint
         await axios.post('http://localhost:3000/scan', scanRequest);
   
         toggle(); // close the modal after submission
@@ -101,12 +113,16 @@ const NewScan = ({ isOpen, toggle }) => {
               </FormGroup>
               <div className="row">
                 <FormGroup className="col-md-4">
-                  <Label for="device">Devices</Label>
-                  <Field as={Input} type="select" name="device" id="device">
-                    <option value="Default">Default</option>
-                    {/* add more options here */}
-                  </Field>
-                </FormGroup>
+                    <Label for="device">Devices</Label>
+                    <Field as={Input} type="select" name="device" id="device">
+                      {/* populate options from deviceOptions */}
+                      {deviceOptions.map((device) => (
+                        <option key={device} value={device}>
+                          {device}
+                        </option>
+                      ))}
+                    </Field>
+                  </FormGroup>
                 <FormGroup className="col-md-4">
                   <FormGroup check style={{ marginTop: '2.3rem' }}>
                     <Label check>
@@ -117,7 +133,7 @@ const NewScan = ({ isOpen, toggle }) => {
                 </FormGroup>
                 <FormGroup className="col-md-4">
                   <Label for="depth">Depth</Label>
-                  <Field as={Input} type="number" name="depth" id="depth" />
+                  <Field as={Input} type="number" name="depth" id="depth" min="0" />
                 </FormGroup>
               </div>
               </Col>
@@ -140,8 +156,8 @@ const NewScan = ({ isOpen, toggle }) => {
                             <Label check>
                             <Input
                                 type="checkbox"
-                                checked={selectedGuidances.includes(item.level)}
-                                onChange={(e) => handleCheckboxChange(e, item.level)}
+                                checked={selectedGuidances.includes(item)}
+                                onChange={(e) => handleCheckboxChange(e, item)}
                             />{' '}
                             {item}
                             </Label>

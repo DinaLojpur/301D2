@@ -5,6 +5,8 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 //import LoginLogo from '../../assets/images/bg/login-logo.png'
+import { ReactComponent as LeftBg } from '../../assets/images/bg/login-bgleft.svg';
+import { ReactComponent as RightBg } from '../../assets/images/bg/login-bg-right.svg';
 import { LOGIN_MUTATION } from "../../utils/graphqlQueries";
 import { errorNotification } from "../../utils";
 
@@ -50,7 +52,8 @@ const LoginFormik = () => {
 
   return (
     <div className="loginBox" >
-
+      <LeftBg className="position-absolute left bottom-0" />
+      <RightBg className="position-absolute end-0 top" />
       <Container fluid className="h-100">
         <Row className="justify-content-center align-items-center h-100">
           <Col lg="12" className="loginContainer">

@@ -29,13 +29,10 @@ import ComponentCard from '../../components/ComponentCard';
 const Scans = () => {
     // data needed when backend is implemented
     // const projects = [];
-    // const scans = [];
     // const selectedProject = null;
     // const selectedScans = [];
-
     // const items = [];
     // const onProjectChange = () => {
-
     // };
     const [isNewScanOpen, setNewScanOpen] = useState(false);
     const [isScheduleScanOpen, setScheduleScanOpen] = useState(false);
@@ -95,27 +92,6 @@ const Scans = () => {
     // const exportExcel = () => {
 
     // };
-
-    // const scanDetails = [
-    //     {
-    //         id: 1,
-    //         scanName: 'Scan 1',
-    //         url: 'https://0barriers.org/scan1',
-    //         depth: 1,
-    //         guidance: 'WCAG2AA',
-    //         lastScanOn: '2023-01-15 @ 6:11 AM',
-    //         nextScheduledOn: '2023-02-01 @ 12:00 AM',
-    //     },
-    //     {
-    //         id: 2,
-    //         scanName: 'Scan 2',
-    //         url: 'https://0barriers.org/scan2',
-    //         depth: 2,
-    //         guidance: 'WCAG2A',
-    //         lastScanOn: '2023-01-20 @ 8:43 PM',
-    //         nextScheduledOn: '2023-02-10 @ 3:00 AM',
-    //     }
-    // ];
 
     return (
         <Container className="mt-3">
@@ -204,11 +180,11 @@ const Scans = () => {
                     </tr>
                 </thead>
                 <tbody className='bordered'>
-                {scanDetails.map((scan) => (
+                {scanDetails.map((scan, index) => (
                   <React.Fragment key={scan.id}>
-                    <tr>
+                    <tr >
                       <td>
-                        <Button color="link" id={`chevron${scan.id}`}>
+                        <Button color="link" id={`chevron${index}`}>
                           <Icon icon="chevron-right" />
                         </Button>
                       </td>
@@ -220,15 +196,17 @@ const Scans = () => {
                       <td>{scan.date_created}</td>
                       <td>-</td>
                     </tr>
-                    <UncontrolledCollapse toggler={`#chevron${scan.id}`}>
+                    <UncontrolledCollapse toggler={`#chevron${index}`}>
                         <tr>
                             <td >
-                            <Table >
+                            <Table style={{ position: 'absolute', width: '97%', backgroundColor: '#fff', zIndex: 1 }} >
                                 <thead>
                                     <tr>
                                     <th>Scan Date</th>
                                     <th>Overall Score</th>
                                     <th>Depth</th>
+                                    <th>Guidances</th>
+                                    <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -236,6 +214,8 @@ const Scans = () => {
                                     <td>Data 1</td>
                                     <td>Data 2</td>
                                     <td>Data 3</td>
+                                    <td>Data 4</td>
+                                    <td>Complete</td>
                                 </tr>
                                 </tbody>
                             </Table>

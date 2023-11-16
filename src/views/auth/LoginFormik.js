@@ -64,7 +64,7 @@ const LoginFormik = () => {
                   render={({ errors, touched, handleChange }) => (
                     <Form>
                       <FormGroup>
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">Username</Label>
                         <Field
                           name="email"
                           type="text"

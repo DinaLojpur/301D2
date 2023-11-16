@@ -71,7 +71,7 @@ const SidebarData = [
     title: 'Help',
     href: '/',
     icon: <Icon.HelpCircle />,
-    id: 6.5,
+    id: 6.6,
     collapsible: true,
     children: [
       {
@@ -90,7 +90,7 @@ const SidebarData = [
     title: 'Admin',
     href: '/auth',
     icon: <Icon.Lock />,
-    id: 6.5,
+    id: 6.7,
     collapisble: true,
     children: [
       {
@@ -109,7 +109,7 @@ const SidebarData = [
     title: 'User Account',
     href: '/auth',
     icon: <Icon.User />,
-    id: 6.5,
+    id: 6.8,
     collapisble: true,
     children: [
       {

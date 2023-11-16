@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     Form,
     Input,
@@ -11,12 +11,14 @@ import {
     DropdownItem,
     UncontrolledDropdown,
     Button,
-    ButtonToolbar
+    ButtonToolbar,
+    UncontrolledCollapse
     // Pagination,
     // PaginationItem,
     // PaginationLink
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
+import axios from 'axios';
 import NewScan from './NewScan';
 import RunScan from './RunScan';
 import ScheduleScan from './ScheduleScan';
@@ -38,6 +40,25 @@ const Scans = () => {
     const [isNewScanOpen, setNewScanOpen] = useState(false);
     const [isScheduleScanOpen, setScheduleScanOpen] = useState(false);
     const [isRunScanOpen, setRunScanOpen] = useState(false);
+    //const [openResultsForScan, setOpenResultsForScan] = useState(null);
+    const [scanDetails, setScanDetails] = useState([]);
+
+    const fetchScanDetails = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/scan_request'); // replace with actual endpoint
+          setScanDetails(response.data.reverse());
+        } catch (error) {
+          console.error('Error fetching Scan Details:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchScanDetails();
+    }, []);
+
+    const handleRefresh = () => {
+        fetchScanDetails();
+    };
 
     const toggleNewScan = () => {
         setNewScanOpen(!isNewScanOpen);
@@ -63,34 +84,38 @@ const Scans = () => {
         setScheduleScanOpen(true);
     };
 
-    const deleteSelectedScans = () => {
+    // const deleteSelectedScans = () => {
 
-    };
+    // };
+
+    // const toggleResultsForScan = (scanId) => {
+    //     setOpenResultsForScan(openResultsForScan === scanId ? null : scanId);
+    // };
 
     // const exportExcel = () => {
 
     // };
 
-    const scanDetails = [
-        {
-            id: 1,
-            scanName: 'Scan 1',
-            url: 'https://0barriers.org/scan1',
-            depth: 1,
-            guidance: 'WCAG2AA',
-            lastScanOn: '2023-01-15 @ 6:11 AM',
-            nextScheduledOn: '2023-02-01 @ 12:00 AM',
-        },
-        {
-            id: 2,
-            scanName: 'Scan 2',
-            url: 'https://0barriers.org/scan2',
-            depth: 2,
-            guidance: 'WCAG2A',
-            lastScanOn: '2023-01-20 @ 8:43 PM',
-            nextScheduledOn: '2023-02-10 @ 3:00 AM',
-        }
-    ];
+    // const scanDetails = [
+    //     {
+    //         id: 1,
+    //         scanName: 'Scan 1',
+    //         url: 'https://0barriers.org/scan1',
+    //         depth: 1,
+    //         guidance: 'WCAG2AA',
+    //         lastScanOn: '2023-01-15 @ 6:11 AM',
+    //         nextScheduledOn: '2023-02-01 @ 12:00 AM',
+    //     },
+    //     {
+    //         id: 2,
+    //         scanName: 'Scan 2',
+    //         url: 'https://0barriers.org/scan2',
+    //         depth: 2,
+    //         guidance: 'WCAG2A',
+    //         lastScanOn: '2023-01-20 @ 8:43 PM',
+    //         nextScheduledOn: '2023-02-10 @ 3:00 AM',
+    //     }
+    // ];
 
     return (
         <Container className="mt-3">
@@ -150,12 +175,12 @@ const Scans = () => {
                         </UncontrolledDropdown>
                         <RunScan isOpen={isRunScanOpen} toggle={toggleRunScan} />
                         <ScheduleScan isOpen={isScheduleScanOpen} toggle={toggleScheduleScan} />
-                        <Button color='info' onClick={deleteSelectedScans} className='text-center m-1'>
+                        <Button color='info' onClick={handleRefresh} className='text-center m-1'>
                             <Icon icon='refresh' color='white' /> Refresh
                         </Button>
-                        <Button color='info' className='text-center m-1'>
+                        {/* <Button color='info' className='text-center m-1'>
                             <Icon icon='export' color='white' /> Export
-                        </Button>
+                        </Button> */}
                     </ButtonToolbar>
                     </div>
                 </div>
@@ -179,18 +204,46 @@ const Scans = () => {
                     </tr>
                 </thead>
                 <tbody className='bordered'>
-                    {scanDetails.map((scan) => (
-                        <tr key={scan.id}>
-                            <td><Icon icon="chevron-right" /></td>
-                            <td><Input type="checkbox" id="exampleCustomCheckbox" /></td>
-                            <td>{scan.scanName}</td>
-                            <td>{scan.url}</td>
-                            <td>{scan.depth}</td>
-                            <td>{scan.guidance}</td>
-                            <td>{scan.lastScanOn}</td>
-                            <td>{scan.nextScheduledOn}</td>
-                        </tr>
-                    ))}
+                {scanDetails.map((scan) => (
+                  <React.Fragment key={scan.id}>
+                    <tr>
+                      <td>
+                        <Button color="link" id={`chevron${scan.id}`}>
+                          <Icon icon="chevron-right" />
+                        </Button>
+                      </td>
+                      <td><Input type="checkbox" /></td>
+                      <td>{scan.name}</td>
+                      <td>{scan.url}</td>
+                      <td>{scan.depth}</td>
+                      <td>{scan.guidance}</td>
+                      <td>{scan.date_created}</td>
+                      <td>-</td>
+                    </tr>
+                    <UncontrolledCollapse toggler={`#chevron${scan.id}`}>
+                        <tr>
+                            <td >
+                            <Table >
+                                <thead>
+                                    <tr>
+                                    <th>Scan Date</th>
+                                    <th>Overall Score</th>
+                                    <th>Depth</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Data 1</td>
+                                    <td>Data 2</td>
+                                    <td>Data 3</td>
+                                </tr>
+                                </tbody>
+                            </Table>
+                            </td>
+                            </tr>
+                    </UncontrolledCollapse>
+                  </React.Fragment>
+                ))}
                 </tbody>
                 </Table>
                 <Row>

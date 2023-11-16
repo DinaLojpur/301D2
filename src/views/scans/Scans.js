@@ -45,7 +45,7 @@ const Scans = () => {
 
     const fetchScanDetails = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/scan_request'); // replace with actual endpoint
+          const response = await axios.get('http://0barriers-development.us-east-2.elasticbeanstalk.com:3000/scan_request'); // replace with actual endpoint
           setScanDetails(response.data.reverse());
         } catch (error) {
           console.error('Error fetching Scan Details:', error);

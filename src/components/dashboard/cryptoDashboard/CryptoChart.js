@@ -1,10 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
+import axios from 'axios';
 import { Row, Col, Input } from 'reactstrap';
 import DashCard from '../dashboardCards/DashCard';
 
 const CryptoChart = () => {
   //Line chart
+  const [monthlyScans, setMonthlyScans] = useState([]);
+
+  useEffect(() => {
+    const fetchScanData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/scan_request'); // replace with actual endpoint
+        const scans = response.data;
+
+        // process scans data to count scans for each month
+        const scansByMonth = Array(12).fill(0);
+
+        scans.forEach((scan) => {
+          const monthIndex = new Date(scan.date_created).getMonth();
+          scansByMonth[monthIndex]++;
+        });
+
+        setMonthlyScans(scansByMonth);
+      } catch (error) {
+        console.error('Error fetching scan data:', error);
+      }
+    };
+
+    fetchScanData();
+  }, []);
+
   const optionscryptocharts = {
     chart: {
       id: 'basic-bar',
@@ -74,7 +100,7 @@ const CryptoChart = () => {
   const seriescryptocharts = [
     {
       name: 'Scans',
-      data: [0, 80, 40, 100, 30, 150, 80, 300, 250, 120, 80, 100]
+      data: monthlyScans
     }
   ];
   return (

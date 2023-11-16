@@ -11,7 +11,7 @@ const CryptoChart = () => {
   useEffect(() => {
     const fetchScanData = async () => {
       try {
-        const response = await axios.get('http://0barriers-development.us-east-2.elasticbeanstalk.com:3000/scan_request'); // replace with actual endpoint
+        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/scan_request'); // replace with actual endpoint
         const scans = response.data;
 
         // process scans data to count scans for each month

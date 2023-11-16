@@ -33,7 +33,7 @@ const NewScan = ({ isOpen, toggle }) => {
   useEffect(() => {
     const fetchGuidanceLevels = async () => {
       try {
-        const response = await axios.get('http://0barriers-development.us-east-2.elasticbeanstalk.com:3000/guidance-levels');
+        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/guidance-levels');
         setGuidanceLevels(response.data.guidance_levels);
       } catch (error) {
         console.error('Error fetching guidance levels:', error);
@@ -46,7 +46,7 @@ const NewScan = ({ isOpen, toggle }) => {
   useEffect(() => {
     const fetchDeviceOptions = async () => {
       try {
-        const response = await axios.get('http://0barriers-development.us-east-2.elasticbeanstalk.com:3000/device-configs');
+        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/device-configs');
         setDeviceOptions(response.data.name);
       } catch (error) {
         console.error('Error fetching guidance levels:', error);
@@ -83,7 +83,7 @@ const NewScan = ({ isOpen, toggle }) => {
       };
 
       // send the scan request to MongoDB endpoint
-      const response = await axios.post('http://0barriers-development.us-east-2.elasticbeanstalk.com:3000/scan', scanRequest);
+      const response = await axios.post('https://deliverable3.marcomarchesano.com:3000/scan', scanRequest);
       console.log(response);
       toggle(); // close the modal after submission
     } catch (error) {

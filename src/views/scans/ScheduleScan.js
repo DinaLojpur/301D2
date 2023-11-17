@@ -28,7 +28,7 @@ const ScheduleScan = ({ isOpen, toggle }) => {
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg" centered>
-      <ModalHeader>Schedule Scan</ModalHeader>
+      <ModalHeader>Schedule Scan (Coming in D5)</ModalHeader>
       <ModalBody>
         <FormGroup>
           <Label for="scheduledDate">Scheduled Date:</Label>

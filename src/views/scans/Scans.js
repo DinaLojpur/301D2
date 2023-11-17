@@ -39,6 +39,7 @@ const Scans = () => {
     const [isRunScanOpen, setRunScanOpen] = useState(false);
     //const [openResultsForScan, setOpenResultsForScan] = useState(null);
     const [scanDetails, setScanDetails] = useState([]);
+    const [scanResults, setScanResults] = useState([]);
 
     const fetchScanDetails = async () => {
         try {
@@ -49,8 +50,17 @@ const Scans = () => {
         }
     };
 
+    const fetchScanResults = async (request) => {
+        try {
+            const response = await axios.get(`https://deliverable3.marcomarchesano.com:3000/scan/?scanRequestId=${request}`);
+            setScanResults(response.data);
+        } catch (error) {
+          console.error('Error fetching Scan Results:', error);
+        }
+    };
+
     useEffect(() => {
-        fetchScanDetails();
+        fetchScanDetails(); // get scan details to populate the rows
     }, []);
 
     const handleRefresh = () => {
@@ -81,6 +91,10 @@ const Scans = () => {
         setScheduleScanOpen(true);
     };
 
+    const openResultsForScan = (scanId) => {
+        fetchScanResults(scanId); // get results for the scan that the results drop down has been opened for
+    };
+
     // const deleteSelectedScans = () => {
 
     // };
@@ -106,7 +120,7 @@ const Scans = () => {
                                 Select a Project
                             </DropdownToggle>
                             <DropdownMenu>
-                            <DropdownItem>Project 1</DropdownItem>
+                            <DropdownItem>Not Available in MVP</DropdownItem>
                             </DropdownMenu>
                             {/* options={projects},
                             value={selectedProject},
@@ -184,7 +198,9 @@ const Scans = () => {
                   <React.Fragment key={scan.id}>
                     <tr >
                       <td>
-                        <Button color="link" id={`chevron${index}`}>
+                        {/* eslint-disable no-underscore-dangle */}
+                        <Button color="link" id={`chevron${index}`} onClick={() => openResultsForScan(scan._id)}>
+                        {/* eslint-enable no-underscore-dangle */}
                           <Icon icon="chevron-right" />
                         </Button>
                       </td>
@@ -202,21 +218,21 @@ const Scans = () => {
                             <Table style={{ position: 'absolute', width: '97%', backgroundColor: '#fff', zIndex: 1 }} >
                                 <thead>
                                     <tr>
-                                    <th>Scan Date</th>
-                                    <th>Overall Score</th>
-                                    <th>Depth</th>
-                                    <th>Guidances</th>
+                                    <th>Page</th>
+                                    <th>Timestamp</th>
+                                    <th>Score</th>
                                     <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Data 1</td>
-                                    <td>Data 2</td>
-                                    <td>Data 3</td>
-                                    <td>Data 4</td>
-                                    <td>Complete</td>
-                                </tr>
+                                {scanResults.map((result) => (
+                                  <tr key={result.id}>
+                                    <td>{result.url}</td>
+                                    <td>{result.timestamp}</td>
+                                    <td>{result.score}</td>
+                                    <td>{scan.status}</td>
+                                  </tr>
+                                ))}
                                 </tbody>
                             </Table>
                             </td>

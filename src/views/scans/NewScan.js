@@ -83,8 +83,7 @@ const NewScan = ({ isOpen, toggle }) => {
       };
 
       // send the scan request to MongoDB endpoint
-      const response = await axios.post('https://deliverable3.marcomarchesano.com:3000/scan', scanRequest);
-      console.log(response);
+      await axios.post('https://deliverable3.marcomarchesano.com:3000/scan', scanRequest);
       toggle(); // close the modal after submission
     } catch (error) {
       console.error('Error submitting scan request:', error);

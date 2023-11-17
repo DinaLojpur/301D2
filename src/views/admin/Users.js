@@ -8,7 +8,8 @@ import {
     DropdownMenu,
     DropdownItem,
     UncontrolledDropdown,
-    Button
+    Button,
+    Label
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
 import ComponentCard from '../../components/ComponentCard';
@@ -20,6 +21,7 @@ const Users = () => {
         <Container className="mt-3">
         <Row>
             <Col sm="20">
+            <Label>Feature not available in MVP</Label>
             <ComponentCard>
                 <div className='d-flex justify-content-between'>
                     <div className='d-flex align-items-center'>

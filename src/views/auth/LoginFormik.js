@@ -40,7 +40,7 @@ const LoginFormik = () => {
         setLoading(false);
         localStorage.setItem("TOKEN", data.login.token);
         localStorage.setItem("USER", JSON.stringify(data.login.user));
-        window.location.href = "/";
+        window.location.href = "/dashboards/crypto";
       })
       .catch((err) => {
         setLoading(false);

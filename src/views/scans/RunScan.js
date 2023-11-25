@@ -22,7 +22,7 @@ const RunScan = ({ isOpen, toggle }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} size="lg" centered>
+    <Modal isOpen={isOpen} toggle={toggle} size="lg" centered backdrop="static">
       <ModalHeader>Run Scan (Coming in D5)</ModalHeader>
       <ModalBody>
         <Row>

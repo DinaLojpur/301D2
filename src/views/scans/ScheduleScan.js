@@ -27,7 +27,7 @@ const ScheduleScan = ({ isOpen, toggle }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} size="lg" centered>
+    <Modal isOpen={isOpen} toggle={toggle} size="lg" centered backdrop="static">
       <ModalHeader>Schedule Scan (Coming in D5)</ModalHeader>
       <ModalBody>
         <FormGroup>

@@ -15,7 +15,11 @@ import {
   Col,
   CardBody,
   Card,
+  Table,
+  CardHeader,
 } from 'reactstrap';
+import { Icon } from '@blueprintjs/core';
+import StepDetails from './StepDetails';
 
 const NewScan = ({ isOpen, toggle }) => {
   const initialValues = {
@@ -25,10 +29,13 @@ const NewScan = ({ isOpen, toggle }) => {
     defineSteps: false,
     depth: 0,
   };
+  const [isStepDetailsOpen, setStepDetailsOpen] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [guidanceLevels, setGuidanceLevels] = useState([]);
   const [selectedGuidances, setSelectedGuidances] = useState([]);
   const [deviceOptions, setDeviceOptions] = useState([]);
+  const [showStepsTable, setShowStepsTable] = useState(false);
+  const [isCardMinimized, setIsCardMinimized] = useState(false);
 
   useEffect(() => {
     const fetchGuidanceLevels = async () => {
@@ -69,6 +76,22 @@ const NewScan = ({ isOpen, toggle }) => {
     }
   };
 
+  const toggleStepDetails = () => {
+    setStepDetailsOpen(!isStepDetailsOpen);
+  };
+
+  const openStep = () => {
+    setStepDetailsOpen(true);
+  };
+
+  const handleDefineStepsChange = (event) => {
+    setShowStepsTable(event.target.checked);
+  };
+
+  const handleToggleCard = () => {
+    setIsCardMinimized(!isCardMinimized);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Starting handleSubmit...');
@@ -91,7 +114,7 @@ const NewScan = ({ isOpen, toggle }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} size="lg" centered>
+    <Modal isOpen={isOpen} toggle={toggle} size="xl" centered backdrop="static">
       <ModalHeader>New Scan Details</ModalHeader>
       <ModalBody>
         <Form initialValues={initialValues} onSubmit={handleSubmit}>
@@ -119,7 +142,10 @@ const NewScan = ({ isOpen, toggle }) => {
                 <FormGroup className="col-md-4">
                   <FormGroup check style={{ marginTop: '2.3rem' }}>
                     <Label check>
-                      <Input type="checkbox" name="defineSteps" />
+                      <Input 
+                        type="checkbox" 
+                        name="defineSteps" 
+                        onChange={handleDefineStepsChange}/>
                       Define Steps
                     </Label>
                   </FormGroup>
@@ -160,12 +186,59 @@ const NewScan = ({ isOpen, toggle }) => {
               </Card>
             </Col>
           </Row>
+          {/* Add Steps toggled when Define Steps checkbox is ticked */}
+          {showStepsTable && (
+            <Card className='mb-3'>
+                {/* Title */}
+                <CardHeader className="p-3">
+                <div className="d-flex justify-content-between align-items-center">
+                  <span style={{ fontWeight: 'bold' }}>Add Steps</span>
+                  <Button color="link" onClick={handleToggleCard}>
+                    {isCardMinimized ? 'Expand' : 'Minimize'}
+                  </Button>
+                </div>
+                </CardHeader>
+                <div className={isCardMinimized ? 'd-none' : ''}> {/* Minimize Toggle */}
+                  <CardBody className='p-3'>
+                  {/* Buttons */}
+                  <div className="d-flex justify-content-end">
+                    <Button color="success" onClick={openStep} className="mr-2 m-1">
+                      <Icon icon='plus' color='white' /> New
+                    </Button>
+                    <StepDetails isOpen={isStepDetailsOpen} toggle={toggleStepDetails} />
+                    <Button color="primary" className='m-1'>
+                      <Icon icon='export' color='white' /> Export
+                    </Button>
+                  </div>
+                  {/* Table */}
+                  <Table bordered hover size="sm" className='m-2'>
+                    <thead>
+                      <tr>
+                        <th>Element</th>
+                        <th>FindType</th>
+                        <th>FindValue</th>
+                        <th>Value</th>
+                        <th>Action</th>
+                        <th>WaitTime</th>
+                        <th>RunScan</th>
+                        <th>IsActive</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Render table rows here */}
+                    </tbody>
+                  </Table>
+                </CardBody>
+                </div>
+            </Card>
+          )}
           <ModalFooter>
-            <Button color="primary" type="submit">
-              Scan
-            </Button>
             <Button color="secondary" onClick={toggle}>
-              Cancel
+            <Icon icon='cross' color='white' /> Cancel
+            </Button>
+            <Button color="primary" type="submit" onClick={handleSubmit}>
+            <Icon icon='tick' color='white' /> Save
             </Button>
           </ModalFooter>
         </Form>

@@ -27,13 +27,6 @@ import ComponentCard from '../../components/ComponentCard';
 
 
 const Scans = () => {
-    // data needed when backend is implemented
-    // const projects = [];
-    // const selectedProject = null;
-    // const selectedScans = [];
-    // const items = [];
-    // const onProjectChange = () => {
-    // };
     const [isNewScanOpen, setNewScanOpen] = useState(false);
     const [isScheduleScanOpen, setScheduleScanOpen] = useState(false);
     const [isRunScanOpen, setRunScanOpen] = useState(false);
@@ -94,18 +87,6 @@ const Scans = () => {
     const openResultsForScan = (scanId) => {
         fetchScanResults(scanId); // get results for the scan that the results drop down has been opened for
     };
-
-    // const deleteSelectedScans = () => {
-
-    // };
-
-    // const toggleResultsForScan = (scanId) => {
-    //     setOpenResultsForScan(openResultsForScan === scanId ? null : scanId);
-    // };
-
-    // const exportExcel = () => {
-
-    // };
 
     return (
         <Container className="mt-3">
@@ -168,9 +149,9 @@ const Scans = () => {
                         <Button color='info' onClick={handleRefresh} className='text-center m-1'>
                             <Icon icon='refresh' color='white' /> Refresh
                         </Button>
-                        {/* <Button color='info' className='text-center m-1'>
+                        <Button color='info' className='text-center m-1'>
                             <Icon icon='export' color='white' /> Export
-                        </Button> */}
+                        </Button>
                     </ButtonToolbar>
                     </div>
                 </div>
@@ -180,7 +161,7 @@ const Scans = () => {
         <Row>
             <Col sm="20">
             <ComponentCard title="Scan Details">
-                <Table>
+                <Table bordered hover size="sm">
                 <thead>
                     <tr>
                         <th>    </th>

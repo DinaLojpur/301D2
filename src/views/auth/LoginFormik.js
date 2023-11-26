@@ -1,14 +1,21 @@
-import React from 'react';
-import { Button, Label, FormGroup, Container, Row, Col, Card, CardBody, Input } from 'reactstrap';
+import { React, useState } from 'react';
+import { Button, Label, FormGroup, Container, Row, Col, Card, CardBody } from 'reactstrap';
+import { useApolloClient } from "@apollo/client";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom';
-import AuthLogo from "../../layouts/logo/AuthLogo";
+import { Link } from 'react-router-dom';
+//import LoginLogo from '../../assets/images/bg/login-logo.png'
 import { ReactComponent as LeftBg } from '../../assets/images/bg/login-bgleft.svg';
 import { ReactComponent as RightBg } from '../../assets/images/bg/login-bg-right.svg';
+import { LOGIN_MUTATION } from "../../utils/graphqlQueries";
+import { errorNotification } from "../../utils";
+
+
 
 const LoginFormik = () => {
-  const navigate = useNavigate();
+  const client = useApolloClient();
+  const [credentials, setCredentials] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const initialValues = {
     email: '',
@@ -22,38 +29,55 @@ const LoginFormik = () => {
       .required('Password is required'),
   });
 
+  const handleLogin = () => {
+    setLoading(true);
+    client
+      .mutate({
+        mutation: LOGIN_MUTATION,
+        variables: credentials
+      })
+      .then(({ data }) => {
+        setLoading(false);
+        localStorage.setItem("TOKEN", data.login.token);
+        localStorage.setItem("USER", JSON.stringify(data.login.user));
+        window.location.href = "/dashboards/crypto";
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+        errorNotification("Error", err.message);
+      });
+    };
+    
+
   return (
-    <div className="loginBox">
+    <div className="loginBox" >
       <LeftBg className="position-absolute left bottom-0" />
       <RightBg className="position-absolute end-0 top" />
       <Container fluid className="h-100">
         <Row className="justify-content-center align-items-center h-100">
           <Col lg="12" className="loginContainer">
-            <AuthLogo />
             <Card>
               <CardBody className="p-4 m-1">
-                <h5 className="mb-0">Login</h5>
-                <small className="pb-4 d-block">
-                  Do not have an account? <Link to="/auth/registerformik">Sign Up</Link>
-                </small>
+                <h4 className="mb-4 text-center">Login</h4>
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
-                  onSubmit={(fields) => {
-                    // eslint-disable-next-line no-alert
-                    alert(`SUCCESS!! :-)\n\n${JSON.stringify(fields, null, 4)}`);
-                    navigate('/');
-                  }}
-                  render={({ errors, touched }) => (
+                  onSubmit={handleLogin}
+                  render={({ errors, touched, handleChange }) => (
                     <Form>
                       <FormGroup>
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">Username</Label>
                         <Field
                           name="email"
                           type="text"
                           className={`form-control${
                             errors.email && touched.email ? ' is-invalid' : ''
                           }`}
+                          placeholder="Enter Business Email"
+                          onChange={(e) => {
+                            handleChange(e);
+                            setCredentials({ ...credentials, email: e.target.value });}}
                         />
                         <ErrorMessage name="email" component="div" className="invalid-feedback" />
                       </FormGroup>
@@ -65,6 +89,11 @@ const LoginFormik = () => {
                           className={`form-control${
                             errors.password && touched.password ? ' is-invalid' : ''
                           }`}
+                          placeholder="Enter Password"
+                          onChange={(e) => {
+                            handleChange(e);
+                            setCredentials({ ...credentials, password: e.target.value });
+                          }}
                         />
                         <ErrorMessage
                           name="password"
@@ -73,22 +102,21 @@ const LoginFormik = () => {
                         />
                       </FormGroup>
                       <FormGroup className="form-check d-flex" inline>
-                        <Label check>
-                          <Input type="checkbox" />
-                          Remember me
-                        </Label>
                         <Link className="ms-auto text-decoration-none" to="/auth/forgotPwd">
-                          <small>Forgot Pwd?</small>
+                          <small>Forgot Password?</small>
                         </Link>
                       </FormGroup>
                       <FormGroup>
-                        <Button type="submit" color="primary" className="me-2">
-                          Login
-                        </Button>
+                        <div className='d-grid gap-2'>
+                          <Button type="submit" color="primary" className="btn" loading={loading}>
+                            Login
+                          </Button>
+                        </div>
                       </FormGroup>
                     </Form>
                   )}
                 />
+                  <h6 className='text-center fw-normal mb-n2'>Don&apos;t have an account? <Link to="/auth/register">Register</Link></h6>
               </CardBody>
             </Card>
           </Col>
@@ -99,3 +127,4 @@ const LoginFormik = () => {
 };
 
 export default LoginFormik;
+

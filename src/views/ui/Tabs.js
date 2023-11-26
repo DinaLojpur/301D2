@@ -5,17 +5,14 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Card,
-  Button,
-  CardTitle,
-  CardText,
   Row,
   Col,
 } from 'reactstrap';
 
-import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
-
 import ComponentCard from '../../components/ComponentCard';
+
+import AccountSettingsComponent from '../settings/AccountSettings';
+import PersonalSettingsComponent from '../settings/PersonalSettings';
 
 const JumbotronComponent = () => {
   const [activeTab, setActiveTab] = useState('1');
@@ -26,8 +23,7 @@ const JumbotronComponent = () => {
 
   return (
     <>
-      <BreadCrumbs />
-      <ComponentCard title="Tab">
+      <ComponentCard title="Settings">
         <Nav tabs>
           <NavItem>
             <NavLink
@@ -36,7 +32,7 @@ const JumbotronComponent = () => {
                 toggle('1');
               }}
             >
-              Tab1
+              Personal
             </NavLink>
           </NavItem>
           <NavItem>
@@ -46,37 +42,29 @@ const JumbotronComponent = () => {
                 toggle('2');
               }}
             >
-              Moar Tabs
+              Account
             </NavLink>
           </NavItem>
         </Nav>
         <TabContent className="p-4" activeTab={activeTab}>
           <TabPane tabId="1">
-            <Row>
-              <Col sm="12">
-                <h4>Tab 1 Contents</h4>
-              </Col>
-            </Row>
+            <PersonalSettingsComponent />
           </TabPane>
           <TabPane tabId="2">
             <Row>
               <Col sm="6">
-                <Card body>
-                  <CardTitle>Special Title Treatment</CardTitle>
-                  <CardText>
-                    With supporting text below as a natural lead-in to additional content.
-                  </CardText>
-                  <Button>Go somewhere</Button>
-                </Card>
+                <AccountSettingsComponent />
               </Col>
-              <Col sm="6">
-                <Card body>
-                  <CardTitle>Special Title Treatment</CardTitle>
-                  <CardText>
-                    With supporting text below as a natural lead-in to additional content.
-                  </CardText>
-                  <Button>Go somewhere</Button>
-                </Card>
+              <Col sm="6" style={{ fontSize: "14px"}}>
+              <ComponentCard title="Password Requirements">
+                  <ul>
+                  <li>At least one digit [0-9].</li>
+                  <li>At least one lowercase character [a-z].</li>
+                  <li>At least one uppercase character [A-Z].</li>
+                  <li>At least one special character [*!@#$%].</li>
+                  <li>At least 8 characters in length, but no more than 32.</li>
+                  </ul>
+              </ComponentCard>
               </Col>
             </Row>
           </TabPane>

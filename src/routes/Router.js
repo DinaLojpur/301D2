@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import Loadable from '../layouts/loader/Loadable';
+import Register from '../views/auth/Register';
 /****Layouts*****/
 
 const FullLayout = Loadable(lazy(() => import('../layouts/FullLayout')));
@@ -101,6 +102,18 @@ const Maintanance = Loadable(lazy(() => import('../views/auth/Maintanance')));
 const LockScreen = Loadable(lazy(() => import('../views/auth/LockScreen')));
 const RecoverPassword = Loadable(lazy(() => import('../views/auth/RecoverPassword')));
 
+/***** Scans Pages ****/
+const PDFAccessibility = Loadable(lazy(() => import('../views/scans/PDFAccessibility')));
+const Scans = Loadable(lazy(() => import('../views/scans/Scans')));
+
+/***** Help Pages ****/
+const ContactUs = Loadable(lazy(() => import('../views/help/ContactUs')));
+const Documentation = Loadable(lazy(() => import('../views/help/Documentation')));
+
+/***** Admin Pages ****/
+const Projects = Loadable(lazy(() => import('../views/admin/Projects')));
+const Users = Loadable(lazy(() => import('../views/admin/Users')));
+
 /*****Routes******/
 
 const ThemeRoutes = [
@@ -108,7 +121,7 @@ const ThemeRoutes = [
     path: '/',
     element: <FullLayout />,
     children: [
-      { path: '/', name: 'Home', element: <Navigate to="/dashboards/classic" /> },
+      { path: '/', name: 'Home', element: <Navigate to="/auth/login" /> },
       { path: '/dashboards/classic', name: 'Classic', exact: true, element: <Classic /> },
       { path: '/dashboards/crypto', name: 'Classic', exact: true, element: <Crypto /> },
       { path: '/dashboards/ecommerce', name: 'ecommerce', exact: true, element: <Ecommerce /> },
@@ -217,10 +230,42 @@ const ThemeRoutes = [
       { path: '404', element: <Error /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
       { path: 'registerformik', element: <RegisterFormik /> },
+      { path: 'register', element: <Register /> },
       { path: 'loginformik', element: <LoginFormik /> },
+      { path: 'login', element: <LoginFormik /> },
       { path: 'maintanance', element: <Maintanance /> },
       { path: 'lockscreen', element: <LockScreen /> },
       { path: 'recoverpwd', element: <RecoverPassword /> },
+    ],
+  },
+  {
+    path: '/scans',
+    element: <FullLayout />,
+    children: [
+      { path: '404', element: <Error /> },
+      { path: '*', element: <Navigate to="/auth/404" /> },
+      { path: 'pdfaccessibility', element: <PDFAccessibility /> },
+      { path: 'scans', element: <Scans /> },
+    ],
+  },
+  {
+    path: '/help',
+    element: <FullLayout />,
+    children: [
+      { path: '404', element: <Error /> },
+      { path: '*', element: <Navigate to="/auth/404" /> },
+      { path: 'contactus', element: <ContactUs /> },
+      { path: 'documentation', element: <Documentation /> },
+    ],
+  },
+  {
+    path: '/admin',
+    element: <FullLayout />,
+    children: [
+      { path: '404', element: <Error /> },
+      { path: '*', element: <Navigate to="/auth/404" /> },
+      { path: 'projects', element: <Projects /> },
+      { path: 'users', element: <Users /> },
     ],
   },
 ];

@@ -3,51 +3,52 @@ import * as Icon from 'react-feather';
 const SidebarData = [
   { caption: 'Home' },
   {
-    title: 'Dashboards',
-    href: '/dashboards',
+    title: '0 Barriers Dashboard',
+    href: '/dashboards/crypto',
     id: 1,
-    suffix: '4',
+    //suffix: '4',
     suffixColor: 'bg-info text-dark-white',
     icon: <Icon.Home />,
-    collapisble: true,
-    children: [
-      {
-        title: 'Classic',
-        href: '/dashboards/classic',
-        icon: <Icon.Disc />,
-        id: 1.1,
-        collapisble: false,
-      },
-      {
-        title: 'Crypto',
-        href: '/dashboards/crypto',
-        icon: <Icon.Disc />,
-        id: 1.2,
-        collapisble: false,
-      },
-      {
-        title: 'Ecommerce',
-        href: '/dashboards/ecommerce',
-        icon: <Icon.Disc />,
-        id: 1.3,
-        collapisble: false,
-      },
-      {
-        title: 'General',
-        href: '/dashboards/general',
-        icon: <Icon.Disc />,
-        id: 1.4,
-        collapisble: false,
-      },
-      {
-        title: 'Extra',
-        href: '/dashboards/extra',
-        icon: <Icon.Disc />,
-        id: 1.5,
-        collapisble: false,
-      },
-    ],
+    collapisble: false
+    // children: [
+    //   {
+    //     title: 'Classic',
+    //     href: '/dashboards/classic',
+    //     icon: <Icon.Disc />,
+    //     id: 1.1,
+    //     collapisble: false,
+    //   },
+    //   {
+    //     title: '0 Barriers Foundation',
+    //     href: '/dashboards/crypto',
+    //     icon: <Icon.Disc />,
+    //     id: 1.2,
+    //     collapisble: false,
+    //   },
+    //   {
+    //     title: 'Ecommerce',
+    //     href: '/dashboards/ecommerce',
+    //     icon: <Icon.Disc />,
+    //     id: 1.3,
+    //     collapisble: false,
+    //   },
+    //   {
+    //     title: 'General',
+    //     href: '/dashboards/general',
+    //     icon: <Icon.Disc />,
+    //     id: 1.4,
+    //     collapisble: false,
+    //   },
+    //   {
+    //     title: 'Extra',
+    //     href: '/dashboards/extra',
+    //     icon: <Icon.Disc />,
+    //     id: 1.5,
+    //     collapisble: false,
+    //   },
+    // ],
   },
+  {/*
   { caption: 'Apps' },
   {
     title: 'Notes',
@@ -462,8 +463,87 @@ const SidebarData = [
         href: '/auth/404',
         icon: <Icon.Disc />,
       },
+      
     ],
   },
+  */},
+  {
+    title: 'Scans',
+    href: '/scans',
+    icon: <Icon.Code />,
+    id: 6.5,
+    collapisble: true,
+    children: [
+      {
+        title: 'Scans',
+        href: '/scans/scans',
+        icon: <Icon.Play />,
+      },
+      {
+        title: 'PDF Accessibility',
+        href: '/scans/pdfaccessibility',
+        icon: <Icon.FileText />,
+      },
+    ]
+  },
+  {
+    title: 'Help',
+    href: '/help',
+    icon: <Icon.HelpCircle />,
+    id: 6.6,
+    collapsible: true,
+    children: [
+      {
+        title: 'Documentation',
+        href: '/help/documentation',
+        icon: <Icon.Info />,
+      },
+      {
+        title: 'Contact Us',
+        href: '/help/contactus',
+        icon: <Icon.AlertCircle />,
+      },
+    ]
+  },
+  {
+    title: 'Admin',
+    href: '/admin',
+    icon: <Icon.Lock />,
+    id: 6.7,
+    collapisble: true,
+    children: [
+      {
+        title: 'Projects',
+        href: '/admin/projects',
+        icon: <Icon.Database />,
+      },
+      {
+        title: 'Users',
+        href: '/admin/users',
+        icon: <Icon.Users />,
+      },
+    ]
+  },
+  {
+    title: 'User Account',
+    href: '/auth',
+    icon: <Icon.User />,
+    id: 6.8,
+    collapisble: true,
+    children: [
+      {
+        title: 'Login',
+        href: '/auth/login',
+        icon: <Icon.LogIn />,
+      },
+      {
+        title: 'Register',
+        href: '/auth/register',
+        icon: <Icon.UserPlus />,
+      },
+    ]
+  },
+  {/* 
   {
     title: 'DD Menu',
     href: '/',
@@ -495,6 +575,7 @@ const SidebarData = [
       },
     ],
   },
+  */},
 ];
 
 export default SidebarData;

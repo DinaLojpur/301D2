@@ -1,12 +1,36 @@
-import React from 'react';
-
+import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
-
+import axios from 'axios';
 import { Row, Col, Input } from 'reactstrap';
 import DashCard from '../dashboardCards/DashCard';
 
 const CryptoChart = () => {
   //Line chart
+  const [monthlyScans, setMonthlyScans] = useState([]);
+
+  useEffect(() => {
+    const fetchScanData = async () => {
+      try {
+        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/scan_request'); // replace with actual endpoint
+        const scans = response.data;
+
+        // process scans data to count scans for each month
+        const scansByMonth = Array(12).fill(0);
+
+        scans.forEach((scan) => {
+          const monthIndex = new Date(scan.date_created).getMonth();
+          scansByMonth[monthIndex]++;
+        });
+
+        setMonthlyScans(scansByMonth);
+      } catch (error) {
+        console.error('Error fetching scan data:', error);
+      }
+    };
+
+    fetchScanData();
+  }, []);
+
   const optionscryptocharts = {
     chart: {
       id: 'basic-bar',
@@ -22,13 +46,13 @@ const CryptoChart = () => {
     },
     stroke: {
       curve: 'smooth',
-      width: 2,
+      width: 4,
     },
     fill: {
       type: 'solid',
       opacity: [0.1, 0.2, 0.9],
     },
-    colors: ['#1240c2', '#40c4ff', '#edf3f7'],
+    colors: ['#FFBF00'],
     legend: {
       show: false,
     },
@@ -36,7 +60,7 @@ const CryptoChart = () => {
       size: 3,
     },
     xaxis: {
-      categories: [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021],
+      categories: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       labels: {
         show: true,
         style: {
@@ -75,17 +99,9 @@ const CryptoChart = () => {
   };
   const seriescryptocharts = [
     {
-      name: 'Bitcoin',
-      data: [0, 80, 40, 100, 30, 150, 80, 300, 250],
-    },
-    {
-      name: 'Ethereum',
-      data: [0, 35, 30, 60, 20, 80, 50, 180, 150],
-    },
-    {
-      name: 'Ripple',
-      data: [0, 15, 15, 38, 8, 40, 20, 100, 70],
-    },
+      name: 'Scans',
+      data: monthlyScans
+    }
   ];
   return (
     /*--------------------------------------------------------------------------------*/
@@ -94,14 +110,13 @@ const CryptoChart = () => {
     <Row>
       <Col xs="12">
         <DashCard
-          title="BitCoin / Ethereum / Ripple"
-          subtitle="Overview of Latest Month"
+          title="Overall Summary of Scans"
+          subtitle="Monthly"
           actions={
             <Input type="select" className="custom-select">
               <option value="0">Monthly</option>
-              <option value="1">Daily</option>
-              <option value="2">Weekly</option>
-              <option value="3">Yearly</option>
+              <option value="1">Weekly</option>
+              <option value="2">Daily</option>
             </Input>
           }
         >

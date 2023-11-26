@@ -1,32 +1,29 @@
-import React from 'react';
-
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import { Card, CardBody, Row, Col } from 'reactstrap';
 
 const CryptoTopCards = () => {
+  const [totalScans, setTotalScans] = useState(0);
+
+  useEffect(() => {
+    const fetchScanData = async () => {
+      try {
+        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/scan_request'); // replace with actual endpoint
+        setTotalScans(response.data.length)
+      } catch (error) {
+        console.error('Error fetching scan data:', error);
+      }
+    };
+
+    fetchScanData();
+  }, []);
+
   return (
     /*--------------------------------------------------------------------------------*/
     /* Used In Dashboard-2 [Cryptocurrency]                                           */
     /*--------------------------------------------------------------------------------*/
     <Row>
-      <Col sm="12" lg="3">
-        {/*--------------------------------------------------------------------------------*/}
-        {/* Card-3                                                                         */}
-        {/*--------------------------------------------------------------------------------*/}
-        <Card className="bg-primary text-dark-white">
-          <CardBody>
-            <div className="d-flex align-items-center">
-              <div>
-                <h6 className="font-12 mb-3">XRP / Ripple</h6>
-                <h4 className="mt-4 fw-bolder mb-0">$2,767.53</h4>
-                <small>12.3014 XRP</small>
-              </div>
-              <div className="circle-box lg-box bg-light ms-auto opacity-50">
-                <i className="bi bi-coin text-primary" />
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-      </Col>
+
       <Col sm="12" lg="3">
         {/*--------------------------------------------------------------------------------*/}
         {/* Card-2                                                                         */}
@@ -35,12 +32,11 @@ const CryptoTopCards = () => {
           <CardBody>
             <div className="d-flex align-items-center">
               <div>
-                <h6 className="font-12 mb-3">ETH / Ethereum</h6>
-                <h4 className="mt-4 fw-bolder mb-0">$767.53</h4>
-                <small>1.3014 ETH</small>
+                <h3 className="font-12 mb-3">Users</h3>
+                <h3 className="mt-4 fw-bolder mb-0">1</h3>
+                <small>currently registered</small>
               </div>
               <div className="circle-box lg-box bg-light ms-auto opacity-50">
-                <i className="bi bi-coin text-info" />
               </div>
             </div>
           </CardBody>
@@ -55,12 +51,11 @@ const CryptoTopCards = () => {
           <CardBody>
             <div className="d-flex align-items-center">
               <div>
-                <h6 className="font-12 mb-3">Tether</h6>
-                <h4 className="mt-4 fw-bolder mb-0">$2,767.53</h4>
-                <small>12.3014 USDT</small>
+                <h3 className="font-12 mb-3">Scheduled Scans</h3>
+                <h3 className="mt-4 fw-bolder mb-0">0</h3>
+                <small>coming up</small>
               </div>
               <div className="circle-box lg-box bg-light ms-auto opacity-50">
-                <i className="bi bi-coin text-success" />
               </div>
             </div>
           </CardBody>
@@ -74,12 +69,11 @@ const CryptoTopCards = () => {
           <CardBody>
             <div className="d-flex align-items-center">
               <div>
-                <h6 className="font-12 mb-3">BTC / Bitcoin</h6>
-                <h4 className="mt-4 fw-bolder mb-0">$12,567.53</h4>
-                <small>3.3014 BTC</small>
+                <h3 className="font-12 mb-3">Total Scans</h3>
+                <h3 className="mt-4 fw-bolder mb-0">{totalScans}</h3>
+                <small>all time</small>
               </div>
               <div className="circle-box lg-box bg-light ms-auto opacity-50">
-                <i className="bi bi-currency-bitcoin text-warning" />
               </div>
             </div>
           </CardBody>

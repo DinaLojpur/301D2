@@ -208,7 +208,7 @@ const Scans = () => {
                       <td>{scan.name}</td>
                       <td>{scan.url}</td>
                       <td>{scan.depth}</td>
-                      <td>{scan.guidance}</td>
+                      <td>{scan.guidance && scan.guidance.length > 0 ? scan.guidance[0] : 'No guidance'}</td>
                       <td>{scan.date_created}</td>
                       <td>-</td>
                     </tr>

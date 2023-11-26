@@ -71,7 +71,6 @@ const NewScan = ({ isOpen, toggle }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Starting handleSubmit...');
     try {
       const formData = new FormData(event.target);
       const scanRequest = {

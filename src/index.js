@@ -10,6 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import { store } from './store/Store';
 import App from './App';
 import './data';
+import {AxiosProvider} from "./utils/AxiosProvider";
 
 const token = localStorage.getItem("TOKEN");
 const uploadLink = createUploadLink({
@@ -30,9 +31,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <ApolloProvider client={client}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <AxiosProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AxiosProvider>
     </ApolloProvider>
   </Provider>,
 );

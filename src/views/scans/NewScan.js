@@ -94,7 +94,6 @@ const NewScan = ({ isOpen, toggle }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Starting handleSubmit...');
     try {
       const formData = new FormData(event.target);
       const scanRequest = {
@@ -237,7 +236,7 @@ const NewScan = ({ isOpen, toggle }) => {
             <Button color="secondary" onClick={toggle}>
             <Icon icon='cross' color='white' /> Cancel
             </Button>
-            <Button color="primary" type="submit" onClick={handleSubmit}>
+            <Button color="primary" type="submit">
             <Icon icon='tick' color='white' /> Save
             </Button>
           </ModalFooter>

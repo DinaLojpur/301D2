@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { 
     Container,
     Row,
@@ -8,24 +8,49 @@ import {
     DropdownMenu,
     DropdownItem,
     UncontrolledDropdown,
-    Button,
-    Label
+    Button
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
+import NewUser from './NewUser';
 import ComponentCard from '../../components/ComponentCard';
+import {useAxios} from "../../utils/AxiosProvider";
 
 
 const Users = () => {
+  const [isNewUserOpen, setNewUserOpen] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const client = useAxios();
+        const response = await client.get('/users');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching Users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const toggleNewUser = () => {
+      setNewUserOpen(!isNewUserOpen);
+  };
+
+  const openNew = () => {
+      setNewUserOpen(true);
+  };
 
     return (
         <Container className="mt-3">
         <Row>
             <Col sm="20">
-            <Label>Feature not available in MVP</Label>
             <ComponentCard>
                 <div className='d-flex justify-content-between'>
                     <div className='d-flex align-items-center'>
-                      <Button color='success'><Icon icon='plus' color='white' /> New</Button>
+                      <Button color='success' onClick={openNew} ><Icon icon='plus' color='white' /> New</Button>
+                      <NewUser isOpen={isNewUserOpen} toggle={toggleNewUser} />
                     </div>
                 </div>
             </ComponentCard>
@@ -44,10 +69,20 @@ const Users = () => {
                         <th>Last Name</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>isActive</th>
+                        <th>IsActive</th>
                     </tr>
                 </thead>
                 <tbody className='bordered'>
+                {users.map((user) => (
+                    <tr>
+                      <td>{user.username}</td>
+                      <td>{user.first_name}</td>
+                      <td>{user.last_name}</td>
+                      <td>{user.email}</td>
+                      <td>{user.admin === false ? 'User' : 'Admin'}</td>
+                      <td>Yes</td>
+                    </tr>
+                ))}
                 </tbody>
                 </Table>
                 <Row>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { 
+import React, { useState, useEffect } from 'react';
+import {
     Container,
     Row,
     Col,
@@ -9,23 +9,48 @@ import {
     DropdownItem,
     UncontrolledDropdown,
     Button,
-    Label
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
 import ComponentCard from '../../components/ComponentCard';
+import NewProject from './NewProject';
+import {useAxios} from "../../utils/AxiosProvider";
 
 
 const Projects = () => {
+  const [isNewProjectOpen, setNewProjectOpen] = useState(false);
+  const [projects, SetProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const client = useAxios();
+        const response = await client.get('/projects');
+        SetProjects(response.data);
+      } catch (error) {
+        console.error('Error fetching Projects:', error);
+      }
+    };
+
+    fetchProjects(); // retrieve projects from DB to display in table upon component mount
+  }, []);
+
+  const toggleNewProject = () => {
+      setNewProjectOpen(!isNewProjectOpen);
+  };
+
+  const openNew = () => {
+      setNewProjectOpen(true);
+  };
 
     return (
         <Container className="mt-3">
         <Row>
             <Col sm="20">
-            <Label>Feature not available in MVP</Label>
             <ComponentCard>
                 <div className='d-flex justify-content-between'>
                     <div className='d-flex align-items-center'>
-                      <Button color='success'><Icon icon='plus' color='white' /> New</Button>
+                      <Button color='success' onClick={openNew} ><Icon icon='plus' color='white' /> New</Button>
+                      <NewProject isOpen={isNewProjectOpen} toggle={toggleNewProject} />
                     </div>
                 </div>
             </ComponentCard>
@@ -44,6 +69,12 @@ const Projects = () => {
                     </tr>
                 </thead>
                 <tbody className='bordered'>
+                {projects.map((project) => (
+                    <tr>
+                      <td>{project.name}</td>
+                      <td>{project.active}</td>
+                    </tr>
+                ))}
                 </tbody>
                 </Table>
                 <Row>

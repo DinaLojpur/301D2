@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Form, Button, Input, Checkbox } from "antd";
 import {Container } from 'reactstrap';
-import { useApolloClient } from "@apollo/client";
 import { Link, useNavigate } from "react-router-dom";
 import {
   isValidBusinessEmail,
@@ -9,12 +8,12 @@ import {
   errorNotification
 } from "../../utils";
 import CountrySelect from "./CountrySelect";
-import { REGISTER_USER_MUTATION } from "../../utils/graphqlQueries";
 import { ReactComponent as LeftBg } from '../../assets/images/bg/login-bgleft.svg';
 import { ReactComponent as RightBg } from '../../assets/images/bg/login-bg-right.svg';
+import {useAxios} from "../../utils/AxiosProvider";
 
 export default function Register() {
-  const client = useApolloClient();
+  const client = useAxios();
   const [registerUserInput, setRegisterUserInput] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -26,20 +25,17 @@ export default function Register() {
   const handleRegister = () => {
     const { confirmPassword, ...registerUserInputData } = registerUserInput;
     setLoading(true);
-    client
-      .mutate({
-        mutation: REGISTER_USER_MUTATION,
-        variables: { data: registerUserInputData }
-      })
-      .then(() => {
+    client.post(
+        '/register',
+        {...registerUserInputData, country_code: registerUserInputData.country_code.label}
+    ).then(() => {
         setLoading(false);
         successNotification("Registration Successful. Redirecting to login.");
         navigate("/auth/login");
-      })
-      .catch((err) => {
+    }).catch((err) => {
         setLoading(false);
-        errorNotification("Error", err.message);
-      });
+        errorNotification("Error", err.response.data);
+    })
   };
 
   const [selectedCountryCode, setSelectedCountryCode] = useState(null);
@@ -63,7 +59,7 @@ export default function Register() {
                 >
                     <h4 className="text-center mb-0">Register</h4>
                     
-                    <Form.Item name="firstName" label="First Name">
+                    <Form.Item name="first_name" label="First Name">
                     <Input
                         required
                         autoFocus
@@ -72,7 +68,7 @@ export default function Register() {
                     />
                     </Form.Item>
                     
-                    <Form.Item name="lastName" label="Last Name">
+                    <Form.Item name="last_name" label="Last Name">
                     <Input
                         required
                         autoFocus
@@ -81,7 +77,7 @@ export default function Register() {
                     />
                     </Form.Item>
                     
-                    <Form.Item name="userName" label="Username">
+                    <Form.Item name="username" label="Username">
                     <Input
                         required
                         autoFocus
@@ -111,7 +107,7 @@ export default function Register() {
                     />
                     </Form.Item>
 
-                    <Form.Item name="countryCode" label="Country Code">
+                    <Form.Item name="country_code" label="Country Code">
                     <CountrySelect
                         value={selectedCountryCode}
                         onChange={(value) => setSelectedCountryCode(value)}

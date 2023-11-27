@@ -1,54 +1,50 @@
 import { React, useState } from 'react';
 import { Button, Label, FormGroup, Container, Row, Col, Card, CardBody } from 'reactstrap';
-import { useApolloClient } from "@apollo/client";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 //import LoginLogo from '../../assets/images/bg/login-logo.png'
 import { ReactComponent as LeftBg } from '../../assets/images/bg/login-bgleft.svg';
 import { ReactComponent as RightBg } from '../../assets/images/bg/login-bg-right.svg';
-import { LOGIN_MUTATION } from "../../utils/graphqlQueries";
 import { errorNotification } from "../../utils";
+import {useAxios} from "../../utils/AxiosProvider";
 
 
 
 const LoginFormik = () => {
-  const client = useApolloClient();
+  const client = useAxios();
   const [credentials, setCredentials] = useState({});
   const [loading, setLoading] = useState(false);
 
   const initialValues = {
-    email: '',
+    username: '',
     password: '',
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Email is invalid').required('Email is required'),
+    username: Yup.string().required('Username is required'),
     password: Yup.string()
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
   });
 
   const handleLogin = () => {
+    console.log('test')
     setLoading(true);
-    client
-      .mutate({
-        mutation: LOGIN_MUTATION,
-        variables: credentials
-      })
-      .then(({ data }) => {
-        setLoading(false);
-        localStorage.setItem("TOKEN", data.login.token);
-        localStorage.setItem("USER", JSON.stringify(data.login.user));
-        window.location.href = "/dashboards/crypto";
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-        errorNotification("Error", err.message);
-      });
-    };
-    
+    client.post(
+        '/login',
+        credentials
+    ).then(({ data }) => {
+      setLoading(false);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      window.location.href = "/dashboards/crypto";
+    }).catch((err) => {
+      setLoading(false);
+      console.log(err)
+      errorNotification("Error: ", err.response.data);
+    });
+  };
 
   return (
     <div className="loginBox" >
@@ -67,17 +63,17 @@ const LoginFormik = () => {
                   render={({ errors, touched, handleChange }) => (
                     <Form>
                       <FormGroup>
-                        <Label htmlFor="email">Username</Label>
+                        <Label htmlFor="username">Username</Label>
                         <Field
-                          name="email"
+                          name="username"
                           type="text"
                           className={`form-control${
-                            errors.email && touched.email ? ' is-invalid' : ''
+                            errors.username && touched.username ? ' is-invalid' : ''
                           }`}
-                          placeholder="Enter Business Email"
+                          placeholder="Enter Username"
                           onChange={(e) => {
                             handleChange(e);
-                            setCredentials({ ...credentials, email: e.target.value });}}
+                            setCredentials({ ...credentials, username: e.target.value });}}
                         />
                         <ErrorMessage name="email" component="div" className="invalid-feedback" />
                       </FormGroup>

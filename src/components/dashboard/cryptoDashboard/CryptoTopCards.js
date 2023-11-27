@@ -1,14 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
 import { Card, CardBody, Row, Col } from 'reactstrap';
+import {useAxios} from "../../../utils/AxiosProvider";
 
 const CryptoTopCards = () => {
   const [totalScans, setTotalScans] = useState(0);
 
+  const client = useAxios();
+
   useEffect(() => {
     const fetchScanData = async () => {
       try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/scan_request'); // replace with actual endpoint
+        const response = await client.get('/scan_request'); // replace with actual endpoint
         setTotalScans(response.data.length)
       } catch (error) {
         console.error('Error fetching scan data:', error);

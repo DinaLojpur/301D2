@@ -36,6 +36,7 @@ const NewScan = ({ isOpen, toggle }) => {
   const [deviceOptions, setDeviceOptions] = useState([]);
   const [showStepsTable, setShowStepsTable] = useState(false);
   const [isCardMinimized, setIsCardMinimized] = useState(false);
+  const [createdSteps, setCreatedSteps] = useState([]);
 
   useEffect(() => {
     const fetchGuidanceLevels = async () => {
@@ -102,6 +103,7 @@ const NewScan = ({ isOpen, toggle }) => {
         device_config: formData.get('device'),
         depth: formData.get('depth'),
         guidance: selectedGuidances,
+        steps: createdSteps,
       };
 
       // send the scan request to MongoDB endpoint
@@ -204,7 +206,7 @@ const NewScan = ({ isOpen, toggle }) => {
                     <Button color="success" onClick={openStep} className="mr-2 m-1">
                       <Icon icon='plus' color='white' /> New
                     </Button>
-                    <StepDetails isOpen={isStepDetailsOpen} toggle={toggleStepDetails} />
+                    <StepDetails isOpen={isStepDetailsOpen} toggle={toggleStepDetails} setCreatedSteps={setCreatedSteps} />
                     <Button color="primary" className='m-1'>
                       <Icon icon='export' color='white' /> Export
                     </Button>
@@ -213,19 +215,27 @@ const NewScan = ({ isOpen, toggle }) => {
                   <Table bordered hover size="sm" className='m-2'>
                     <thead>
                       <tr>
-                        <th>Element</th>
-                        <th>FindType</th>
+                        <th>Element Type</th>
+                        <th>FindBy</th>
                         <th>FindValue</th>
-                        <th>Value</th>
                         <th>Action</th>
                         <th>WaitTime</th>
-                        <th>RunScan</th>
                         <th>IsActive</th>
                         <th>Notes</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {/* Render table rows here */}
+                      {createdSteps.map((step) => (
+                        <tr key={step.url}>
+                          <td>{step.elemType}</td>
+                          <td>{step.findBy}</td>
+                          <td>{step.findValue}</td>
+                          <td>{step.stepAction}</td>
+                          <td>{step.waitTime}</td>
+                          <td>{step.isActive}</td>
+                          <td>{step.notes}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </Table>
                 </CardBody>

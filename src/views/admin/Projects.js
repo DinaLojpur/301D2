@@ -17,13 +17,14 @@ import {useAxios} from "../../utils/AxiosProvider";
 
 
 const Projects = () => {
+  const client = useAxios();
+
   const [isNewProjectOpen, setNewProjectOpen] = useState(false);
   const [projects, SetProjects] = useState([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const client = useAxios();
         const response = await client.get('/projects');
         SetProjects(response.data);
       } catch (error) {

@@ -17,13 +17,14 @@ import {useAxios} from "../../utils/AxiosProvider";
 
 
 const Users = () => {
+  const client = useAxios();
+
   const [isNewUserOpen, setNewUserOpen] = useState(false);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const client = useAxios();
         const response = await client.get('/users');
         setUsers(response.data);
       } catch (error) {

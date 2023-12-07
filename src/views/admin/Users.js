@@ -13,14 +13,13 @@ import {
 import { Icon } from '@blueprintjs/core';
 import NewUser from './NewUser';
 import ComponentCard from '../../components/ComponentCard';
-import {useAxios} from "../../utils/AxiosProvider";
+import { useAxios } from "../../utils/AxiosProvider";
 
 
 const Users = () => {
-  const client = useAxios();
-
   const [isNewUserOpen, setNewUserOpen] = useState(false);
   const [users, setUsers] = useState([]);
+  const client = useAxios();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -63,8 +62,6 @@ const Users = () => {
                 <Table>
                 <thead>
                     <tr>
-                        <th>    </th>
-                        <th>    </th>
                         <th>Username</th>
                         <th>First Name</th>
                         <th>Last Name</th>

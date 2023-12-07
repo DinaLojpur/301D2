@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Input, Label, FormGroup, Row, Col, Form } from 'reactstrap';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useAxios } from '../../utils/AxiosProvider';
+import {useAxios} from "../../utils/AxiosProvider";
 
 const NewUser = ({ isOpen, toggle }) => {
-  const client = useAxios();
-
   const [isActive, setIsActive] = useState(false);
   const initialValues = {
     userName: '',
@@ -15,6 +13,7 @@ const NewUser = ({ isOpen, toggle }) => {
     email: '',
     role: ''
   }
+  const client = useAxios();
 
   const handleIsActiveChange = (event) => {
     setIsActive(event.target.checked); // toggle value when checkbox changes

@@ -43,7 +43,8 @@ const StepDetails = ({ isOpen, toggle, setCreatedSteps }) => {
     event.preventDefault();
     console.log('Starting handleSubmit...');
     try {
-      const formData = new FormData(event.target);
+      const form = document.getElementById('steps');
+      const formData = new FormData(form);
       const stepRequest = {
         url: formData.get('url'),
         elemType: formData.get('elemType'),
@@ -73,7 +74,7 @@ const StepDetails = ({ isOpen, toggle, setCreatedSteps }) => {
     <Modal isOpen={isOpen} toggle={toggle} size="xl" centered backdrop="static">
       <ModalHeader>Step Details</ModalHeader>
       <ModalBody>
-        <Form initialValues={initialValues} onSubmit={handleSubmit}>
+        <Form id="steps" initialValues={initialValues} onSubmit={handleSubmit}>
           <Row>
           <Col md="12">
             <FormGroup>
@@ -161,20 +162,22 @@ const StepDetails = ({ isOpen, toggle, setCreatedSteps }) => {
           <Col md="4">
             <FormGroup className="row-md-4">
               <FormGroup check inline style={{ marginTop: '2.3rem' }}>
-                <Label check>
+                <Label for="runScan" check>
                   <Input 
                     type="checkbox" 
                     name="runScan"
+                    id="runScan"
                     disabled
                     />
                   Run Scan
                 </Label>
               </FormGroup>
               <FormGroup check inline style={{ marginTop: '2.3rem' }}>
-                <Label check>
+                <Label for="isActive" check>
                   <Input 
                     type="checkbox" 
                     name="isActive" 
+                    id="isActive"
                     checked={initialValues.isActive}
                     onChange={(e) => handleCheckboxChange(e)}
                     />
@@ -187,8 +190,8 @@ const StepDetails = ({ isOpen, toggle, setCreatedSteps }) => {
           <Row>
           <Col md="12">
             <FormGroup>
-              <Label>Notes</Label>
-              <Input type="textarea" style={{ height: '120px'}} />
+              <Label for="notes">Notes</Label>
+              <Input type="textarea" name="notes" id="notes" style={{ height: '120px'}} />
             </FormGroup>
           </Col>
           </Row>
@@ -197,7 +200,7 @@ const StepDetails = ({ isOpen, toggle, setCreatedSteps }) => {
           <Button color="secondary" onClick={toggle}>
           <Icon icon='cross' color='white' /> Cancel
           </Button>
-          <Button color="primary" type="submit">
+          <Button color="primary" type="submit" onClick={(event) => handleSubmit(event)}>
           <Icon icon='tick' color='white' /> Save
           </Button>
         </ModalFooter>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import {
   Modal,
@@ -20,6 +19,7 @@ import {
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
 import StepDetails from './StepDetails';
+import {useAxios} from "../../utils/AxiosProvider";
 
 const NewScan = ({ isOpen, toggle }) => {
   const initialValues = {
@@ -37,11 +37,12 @@ const NewScan = ({ isOpen, toggle }) => {
   const [showStepsTable, setShowStepsTable] = useState(false);
   const [isCardMinimized, setIsCardMinimized] = useState(false);
   const [createdSteps, setCreatedSteps] = useState([]);
+  const client = useAxios();
 
   useEffect(() => {
     const fetchGuidanceLevels = async () => {
       try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/guidance-levels');
+        const response = await client.get('/guidance-levels');
         setGuidanceLevels(response.data.guidance_levels);
       } catch (error) {
         console.error('Error fetching guidance levels:', error);
@@ -54,7 +55,7 @@ const NewScan = ({ isOpen, toggle }) => {
   useEffect(() => {
     const fetchDeviceOptions = async () => {
       try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/device-configs');
+        const response = await client.get('/device-configs');
         setDeviceOptions(response.data.name);
       } catch (error) {
         console.error('Error fetching guidance levels:', error);
@@ -107,7 +108,7 @@ const NewScan = ({ isOpen, toggle }) => {
       };
 
       // send the scan request to MongoDB endpoint
-      await axios.post('https://deliverable3.marcomarchesano.com:3000/scan', scanRequest);
+      await client.post('/create-scan', scanRequest);
       toggle(); // close the modal after submission
     } catch (error) {
       console.error('Error submitting scan request:', error);
@@ -206,7 +207,7 @@ const NewScan = ({ isOpen, toggle }) => {
                     <Button color="success" onClick={openStep} className="mr-2 m-1">
                       <Icon icon='plus' color='white' /> New
                     </Button>
-                    <StepDetails isOpen={isStepDetailsOpen} toggle={toggleStepDetails} setCreatedSteps={setCreatedSteps} />
+                    <StepDetails isOpen={isStepDetailsOpen} toggle={(toggleStepDetails)} setCreatedSteps={setCreatedSteps} />
                     <Button color="primary" className='m-1'>
                       <Icon icon='export' color='white' /> Export
                     </Button>

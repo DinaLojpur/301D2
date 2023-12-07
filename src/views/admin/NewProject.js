@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Card, CardBody, Input, Label, FormGroup, Row, Col, Form } from 'reactstrap';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useAxios } from '../../utils/AxiosProvider';
+import {useAxios} from "../../utils/AxiosProvider";
 
 
 const NewProject = ({ isOpen, toggle }) => {
-  const client = useAxios();
-
   const [selectAll, setSelectAll] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isActive, setIsActive] = useState(false);
   const [users, setUsers] = useState([]);
-
+  const client = useAxios();
 
   const initialvalues = {
     projectName: ''

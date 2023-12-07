@@ -18,12 +18,11 @@ import {
     // PaginationLink
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
-import axios from 'axios';
 import NewScan from './NewScan';
 import RunScan from './RunScan';
 import ScheduleScan from './ScheduleScan';
 import ComponentCard from '../../components/ComponentCard';
-
+import {useAxios} from "../../utils/AxiosProvider";
 
 
 const Scans = () => {
@@ -33,10 +32,11 @@ const Scans = () => {
     //const [openResultsForScan, setOpenResultsForScan] = useState(null);
     const [scanDetails, setScanDetails] = useState([]);
     const [scanResults, setScanResults] = useState([]);
+    const client = useAxios();
 
     const fetchScanDetails = async () => {
         try {
-          const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/scan_request'); // replace with actual endpoint
+          const response = await client.get('/scan_request'); // replace with actual endpoint
           setScanDetails(response.data.reverse());
         } catch (error) {
           console.error('Error fetching Scan Details:', error);
@@ -45,7 +45,7 @@ const Scans = () => {
 
     const fetchScanResults = async (request) => {
         try {
-            const response = await axios.get(`https://deliverable3.marcomarchesano.com:3000/scan/?scanRequestId=${request}`);
+            const response = await client.get(`/scan/?scanRequestId=${request}`);
             setScanResults(response.data);
         } catch (error) {
           console.error('Error fetching Scan Results:', error);

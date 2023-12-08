@@ -11,7 +11,7 @@ export const AxiosProvider = ({ children }) => {
     const axiosInstance = axios.create({
         baseURL: baseUrl,
         headers: {
-            "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpkZXNvdXNhIiwiaWF0IjoxNzAxMTIxMTkyLCJleHAiOjE3MDEyMDc1OTJ9.Mccm27MEPaArUARvHNKsZPwjxqQBRpuE5e3bGNpW_1g"
+            "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpkZXNvdXNhIiwiaWF0IjoxNzAxNzI4MTgyLCJleHAiOjE3MDE4MTQ1ODJ9.i_V1HO56HGIftSqz86UYQ9gZYBsrDu9UO11h5wlG_hc"
         }
     });
 
@@ -68,6 +68,7 @@ export const AxiosProvider = ({ children }) => {
     //         }
     //     );
     // }, [axiosInstance]);
+
 
     return (
         <AxiosContext.Provider value={axiosInstance}>

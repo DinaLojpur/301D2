@@ -13,17 +13,17 @@ import {
 import { Icon } from '@blueprintjs/core';
 import ComponentCard from '../../components/ComponentCard';
 import NewProject from './NewProject';
-import {useAxios} from "../../utils/AxiosProvider";
+import { useAxios } from "../../utils/AxiosProvider";
 
 
 const Projects = () => {
   const [isNewProjectOpen, setNewProjectOpen] = useState(false);
   const [projects, SetProjects] = useState([]);
+  const client = useAxios();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const client = useAxios();
         const response = await client.get('/projects');
         SetProjects(response.data);
       } catch (error) {
@@ -62,8 +62,6 @@ const Projects = () => {
                 <Table>
                 <thead>
                     <tr>
-                        <th>    </th>
-                        <th>    </th>
                         <th>Project Name</th>
                         <th>Is Active</th>
                     </tr>

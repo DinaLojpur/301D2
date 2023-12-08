@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Row,
@@ -15,8 +15,8 @@ import {
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
 
-const StepDetails = ({ isOpen, toggle }) => {
-  const initialValues = {
+const StepDetails = ({ isOpen, toggle, setCreatedSteps }) => {
+  const [initialValues, setInitialValues] = useState({
     url: '',
     elemType: '',
     findBy: '',
@@ -25,73 +25,27 @@ const StepDetails = ({ isOpen, toggle }) => {
     findValue: '',
     stepAction: 'Default',
     waitTime: 0,
-    runScan: false,
+    // runScan: false,
     isActive: false,
     notes: '',
-  };
+  });
 
-  /* 
-  useEffect(() => {
-    const fetchElementTypes = async () => {
-      try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/guidance-levels');
-        setElementTypes(response.data.element_types);
-      } catch (error) {
-        console.error('Error fetching element types:', error);
-      }
-    };
-
-    fetchElementTypes();
-  }, []);
-
-  useEffect(() => {
-    const fetchFindBySelectorTypes = async () => {
-      try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/guidance-levels');
-        setFindBySelectorTypes(response.data.selector_types);
-      } catch (error) {
-        console.error('Error fetching selector types:', error);
-      }
-    };
-
-    fetchFindBySelectorTypes();
-  }, []);
-
-  useEffect(() => {
-    const fetchStepActionTypes = async () => {
-      try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/guidance-levels');
-        setStepActionTypes(response.data.stepaction_types);
-      } catch (error) {
-        console.error('Error fetching step action types:', error);
-      }
-    };
-
-    fetchStepActionTypes();
-  }, []);
-
-  TODO: change this after seeking clarification on 
-  how to handle Run scan and Is Active checkmarks
-  const handleCheckboxChange = (event, itemName) => {
-    const { checked } = event.target;
-    const updatedItems = checked
-      ? [...selectedGuidances, itemName]
-      : selectedGuidances.filter((item) => item !== itemName);
-    setSelectedGuidances(updatedItems);
+  const handleCheckboxChange = (event) => {
+    const { checked, name } = event.target;
+    
+    if (name === 'isActive') {
+      // Set isActive property in initialValues
+      setInitialValues((prevValues) => ({...prevValues, [name]: checked}))
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Starting handleSubmit...');
     try {
-      const formData = new FormData(event.target);
+      const form = document.getElementById('steps');
+      const formData = new FormData(form);
       const stepRequest = {
-        name: formData.get('name'),
-        scan_url: formData.get('url'),
-        device_config: formData.get('device'),
-        depth: formData.get('depth'),
-        guidance: selectedGuidances,
-
         url: formData.get('url'),
         elemType: formData.get('elemType'),
         findBy: formData.get('findBy'),
@@ -100,25 +54,27 @@ const StepDetails = ({ isOpen, toggle }) => {
         findValue: formData.get('findValue'),
         stepAction: formData.get('stepAction'),
         waitTime: formData.get('waitTime'),
-        runScan: formData.get('runScan'),
+        // runScan: formData.get('runScan'),
         isActive: formData.get('isActive'),
         notes: formData.get('notes'),
       };
 
+      // update steps state in NewScans component
+      setCreatedSteps((prevSteps) => [...prevSteps, stepRequest]);
+
       // send the scan request to MongoDB endpoint
-      await axios.post('https://deliverable3.marcomarchesano.com:3000/step', stepRequest);
       toggle(); // close the modal after submission
     } catch (error) {
       console.error('Error submitting step request:', error);
     }
   };
-  */
+  
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="xl" centered backdrop="static">
       <ModalHeader>Step Details</ModalHeader>
       <ModalBody>
-        <Form initialValues={initialValues}>
+        <Form id="steps" initialValues={initialValues} onSubmit={handleSubmit}>
           <Row>
           <Col md="12">
             <FormGroup>
@@ -160,13 +116,6 @@ const StepDetails = ({ isOpen, toggle }) => {
               <option>ClassName</option>
               <option>TagName</option>
               <option>CssSelector</option>
-              {/*
-              {findByOptions.map((device) => (
-                <option key={device} value={device}>
-                  {device}
-                </option>
-              ))}
-              */}
             </Input>
             </FormGroup>
           </Col>
@@ -201,13 +150,6 @@ const StepDetails = ({ isOpen, toggle }) => {
               <option>Click</option>
               <option>SelectValue</option>
               <option>Navigate</option>
-              {/*
-              {stepActionOptions.map((device) => (
-                <option key={device} value={device}>
-                  {device}
-                </option>
-              ))}
-              */}
             </Input>
             </FormGroup>
           </Col>
@@ -220,18 +162,25 @@ const StepDetails = ({ isOpen, toggle }) => {
           <Col md="4">
             <FormGroup className="row-md-4">
               <FormGroup check inline style={{ marginTop: '2.3rem' }}>
-                <Label check>
+                <Label for="runScan" check>
                   <Input 
                     type="checkbox" 
-                    name="runScan" />
+                    name="runScan"
+                    id="runScan"
+                    disabled
+                    />
                   Run Scan
                 </Label>
               </FormGroup>
               <FormGroup check inline style={{ marginTop: '2.3rem' }}>
-                <Label check>
+                <Label for="isActive" check>
                   <Input 
                     type="checkbox" 
-                    name="isActive" />
+                    name="isActive" 
+                    id="isActive"
+                    checked={initialValues.isActive}
+                    onChange={(e) => handleCheckboxChange(e)}
+                    />
                   Is Active
                 </Label>
               </FormGroup>
@@ -241,8 +190,8 @@ const StepDetails = ({ isOpen, toggle }) => {
           <Row>
           <Col md="12">
             <FormGroup>
-              <Label>Notes</Label>
-              <Input type="textarea" style={{ height: '120px'}} />
+              <Label for="notes">Notes</Label>
+              <Input type="textarea" name="notes" id="notes" style={{ height: '120px'}} />
             </FormGroup>
           </Col>
           </Row>
@@ -251,7 +200,7 @@ const StepDetails = ({ isOpen, toggle }) => {
           <Button color="secondary" onClick={toggle}>
           <Icon icon='cross' color='white' /> Cancel
           </Button>
-          <Button color="primary" type="submit">
+          <Button color="primary" type="submit" onClick={(event) => handleSubmit(event)}>
           <Icon icon='tick' color='white' /> Save
           </Button>
         </ModalFooter>
@@ -263,6 +212,7 @@ const StepDetails = ({ isOpen, toggle }) => {
 StepDetails.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
+  setCreatedSteps: PropTypes.func.isRequired,
 };
 
 export default StepDetails;

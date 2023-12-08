@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Card, CardBody, Input, Label, FormGroup, Row, Col, Form } from 'reactstrap';
 import 'react-datepicker/dist/react-datepicker.css';
-import {useAxios} from "../..utils/AxiosProvider";
+import {useAxios} from "../../utils/AxiosProvider";
 
 
 const NewProject = ({ isOpen, toggle }) => {
@@ -10,7 +10,7 @@ const NewProject = ({ isOpen, toggle }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [isActive, setIsActive] = useState(false);
   const [users, setUsers] = useState([]);
-
+  const client = useAxios();
 
   const initialvalues = {
     projectName: ''
@@ -19,7 +19,6 @@ const NewProject = ({ isOpen, toggle }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const client = useAxios();
         const response = await client.get('/users');
         setUsers(response.data);
       } catch (error) {
@@ -38,7 +37,7 @@ const NewProject = ({ isOpen, toggle }) => {
     } else {
       const updatedItems = checked
         ? [...selectedUsers, itemName]
-        : selectedUsers.filter((item) => item !== itemName);
+        : selectedUsers.filter((user) => user !== itemName);
       setSelectedUsers(updatedItems);
     }
   };
@@ -53,9 +52,13 @@ const NewProject = ({ isOpen, toggle }) => {
       const formData = new FormData(event.target);
       console.log(formData.get('projectName'));
       console.log('isActive:', isActive);
-      // send new project to endpoint
-      const client = useAxios();
-      await client.post('/project');
+      const project = {
+        name: formData.get('projectName'),
+        active: isActive,
+        users: selectedUsers
+      }
+        // send new project to endpoint
+      await client.post('/project', project);
 
       setIsActive(false);
       toggle(); // close the modal after submission
@@ -104,18 +107,20 @@ const NewProject = ({ isOpen, toggle }) => {
                         All
                     </Label>
                     </FormGroup>
-                    {users.map((user) => ( // map list of users to checklist for adding to new project
-                    <FormGroup check key={user}>
-                        <Label check>
+                    {/* eslint-disable no-underscore-dangle */}
+                    {users.map((user) => (
+                    <FormGroup check key={user._id}>
+                    {/* eslint-enable no-underscore-dangle */}
+                      <Label check>
                         <Input
-                            type="checkbox"
-                            checked={selectedUsers.includes(user)}
-                            onChange={(e) => handleCheckboxChange(e, user)}
+                          type="checkbox"
+                          checked={selectedUsers.includes(user)}
+                          onChange={(e) => handleCheckboxChange(e, user)}
                         />{' '}
                         {user.username}
-                        </Label>
+                      </Label>
                     </FormGroup>
-                    ))}
+                  ))}
                 </CardBody>
                 </Card>
             </Col>
@@ -125,9 +130,12 @@ const NewProject = ({ isOpen, toggle }) => {
                     <CardBody style={{ height: '223px', overflowY: 'auto'}}>
                     <div className="selected-items">
                         <ul>
-                            {selectedUsers.map((user) => ( // show the users that have been added to this project
-                            <li key={user}>{user}</li>
+                            {/* eslint-disable no-underscore-dangle */}
+                            {selectedUsers.map((user) => (
+                                <li key={user._id}>{user.username}</li>
+                            
                             ))}
+                            {/* eslint-enable no-underscore-dangle */}
                         </ul>
                     </div>
                     </CardBody>

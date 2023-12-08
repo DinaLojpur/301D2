@@ -18,11 +18,12 @@ import {
     // PaginationLink
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
-import axios from 'axios';
 import NewScan from './NewScan';
 import RunScan from './RunScan';
 import ScheduleScan from './ScheduleScan';
 import ComponentCard from '../../components/ComponentCard';
+import DeleteScan from './DeleteScan';
+import {useAxios} from "../../utils/AxiosProvider";
 
 
 
@@ -33,10 +34,29 @@ const Scans = () => {
     //const [openResultsForScan, setOpenResultsForScan] = useState(null);
     const [scanDetails, setScanDetails] = useState([]);
     const [scanResults, setScanResults] = useState([]);
+    const [projects, setProjects] = useState([]);
+    const [selectedProject, setSelectedProject] = useState(null);
+    const [selectedScan, setSelectedScan] = useState(null);
+    const [isDeleteScanOpen, setDeleteScanOpen] = useState(false);
+
+    const client = useAxios();
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await client.get('/projects');
+                setProjects(response.data);
+            } catch (error) {
+                console.error('Error fetching Projects:', error);
+            }
+        };
+
+        fetchProjects();
+    }, []);
 
     const fetchScanDetails = async () => {
         try {
-          const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/scan_request'); // replace with actual endpoint
+          const response = await client.get('/scan_request'); // replace with actual endpoint
           setScanDetails(response.data.reverse());
         } catch (error) {
           console.error('Error fetching Scan Details:', error);
@@ -45,7 +65,7 @@ const Scans = () => {
 
     const fetchScanResults = async (request) => {
         try {
-            const response = await axios.get(`https://deliverable3.marcomarchesano.com:3000/scan/?scanRequestId=${request}`);
+            const response = await client.get(`/scan/?scanRequestId=${request}`);
             setScanResults(response.data);
         } catch (error) {
           console.error('Error fetching Scan Results:', error);
@@ -83,10 +103,32 @@ const Scans = () => {
     const openSchedule = () => {
         setScheduleScanOpen(true);
     };
+    
+    const ToggleDeleteScan = () => {
+        setDeleteScanOpen(!isDeleteScanOpen);
+    };
+
+    const openDelete = () => {
+        setDeleteScanOpen(true);
+    };
 
     const openResultsForScan = (scanId) => {
         fetchScanResults(scanId); // get results for the scan that the results drop down has been opened for
     };
+
+    const onProjectChange = (project) => {
+        setSelectedProject(project);
+    };
+
+    const handleCheckboxChange = (event, scan) => {
+        const { checked } = event.target;
+        if (checked) {
+            setSelectedScan(scan);
+        } else {
+            setSelectedScan(null);
+        }
+    };
+    console.log(selectedScan);
 
     return (
         <Container className="mt-3">
@@ -97,19 +139,18 @@ const Scans = () => {
                     <div className='d-flex align-items-center'>
                         <h4 style={{ marginRight: '10px' }}>Projects</h4>
                         <UncontrolledDropdown>
-                            <DropdownToggle caret color="white" style={{ width:'250px' }}>
-                                Select a Project
+                            <DropdownToggle caret color="white" style={{ width: '250px' }}>
+                                {selectedProject ? selectedProject.name : 'Select a Project'}
                             </DropdownToggle>
                             <DropdownMenu>
-                            <DropdownItem>Not Available in MVP</DropdownItem>
+                                {/* eslint-disable no-underscore-dangle */}
+                                {projects.map((project) => (
+                                <DropdownItem key={project._id} onClick={() => onProjectChange(project)}>
+                                {/* eslint-enable no-underscore-dangle */}
+                                    {project.name}
+                                </DropdownItem>
+                                ))}
                             </DropdownMenu>
-                            {/* options={projects},
-                            value={selectedProject},
-                            onChange={onProjectChange},
-                            filter,
-                            filterBy="name",
-                            placeholder="Select a Project",
-                            optionLabel="name" */}    
                         </UncontrolledDropdown>
                     </div>
                     <div>
@@ -142,10 +183,12 @@ const Scans = () => {
                             <DropdownMenu>
                             <DropdownItem onClick={openRun}>Run Scan</DropdownItem>
                             <DropdownItem onClick={openSchedule}>Schedule Scan</DropdownItem>
+                            <DropdownItem onClick={openDelete}>Delete Scan</DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
-                        <RunScan isOpen={isRunScanOpen} toggle={toggleRunScan} />
+                        <RunScan isOpen={isRunScanOpen} toggle={toggleRunScan} selectedScan={selectedScan} />
                         <ScheduleScan isOpen={isScheduleScanOpen} toggle={toggleScheduleScan} />
+                        <DeleteScan isOpen={isDeleteScanOpen} toggle={ToggleDeleteScan} selectedScan={selectedScan}/>
                         <Button color='info' onClick={handleRefresh} className='text-center m-1'>
                             <Icon icon='refresh' color='white' /> Refresh
                         </Button>
@@ -170,6 +213,7 @@ const Scans = () => {
                         <th>URL</th>
                         <th>Depth</th>
                         <th>Guidances</th>
+                        <th>Score</th>
                         <th>Last Scan On</th>
                         <th>Next Scheduled On</th>
                     </tr>
@@ -185,11 +229,12 @@ const Scans = () => {
                           <Icon icon="chevron-right" />
                         </Button>
                       </td>
-                      <td><Input type="checkbox" /></td>
+                      <td><Input type="checkbox" onChange={(e) => handleCheckboxChange(e, scan)} checked={selectedScan === scan}/></td>
                       <td>{scan.name}</td>
                       <td>{scan.url}</td>
                       <td>{scan.depth}</td>
                       <td>{scan.guidance}</td>
+                      <td>{scan.weighted_score ? scan.weighted_score : "-"}</td>
                       <td>{scan.date_created}</td>
                       <td>-</td>
                     </tr>

@@ -13,19 +13,19 @@ import {
 import { Icon } from '@blueprintjs/core';
 import ComponentCard from '../../components/ComponentCard';
 import NewProject from './NewProject';
-import {useAxios} from "../../utils/AxiosProvider";
+import { useAxios } from "../../utils/AxiosProvider";
 
 
 const Projects = () => {
   const [isNewProjectOpen, setNewProjectOpen] = useState(false);
   const [projects, SetProjects] = useState([]);
+  const client = useAxios();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const client = useAxios();
         const response = await client.get('/projects');
-        SetProjects(response.data);
+        SetProjects(response.data.reverse());
       } catch (error) {
         console.error('Error fetching Projects:', error);
       }
@@ -62,8 +62,6 @@ const Projects = () => {
                 <Table>
                 <thead>
                     <tr>
-                        <th>    </th>
-                        <th>    </th>
                         <th>Project Name</th>
                         <th>Is Active</th>
                     </tr>
@@ -72,7 +70,7 @@ const Projects = () => {
                 {projects.map((project) => (
                     <tr>
                       <td>{project.name}</td>
-                      <td>{project.active}</td>
+                      <td>{project.active ? "Yes" : "No"}</td>
                     </tr>
                 ))}
                 </tbody>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import {
   Modal,
@@ -20,6 +19,7 @@ import {
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
 import StepDetails from './StepDetails';
+import {useAxios} from "../../utils/AxiosProvider";
 
 const NewScan = ({ isOpen, toggle }) => {
   const initialValues = {
@@ -36,11 +36,13 @@ const NewScan = ({ isOpen, toggle }) => {
   const [deviceOptions, setDeviceOptions] = useState([]);
   const [showStepsTable, setShowStepsTable] = useState(false);
   const [isCardMinimized, setIsCardMinimized] = useState(false);
+  const [createdSteps, setCreatedSteps] = useState([]);
+  const client = useAxios();
 
   useEffect(() => {
     const fetchGuidanceLevels = async () => {
       try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/guidance-levels');
+        const response = await client.get('/guidance-levels');
         setGuidanceLevels(response.data.guidance_levels);
       } catch (error) {
         console.error('Error fetching guidance levels:', error);
@@ -53,7 +55,7 @@ const NewScan = ({ isOpen, toggle }) => {
   useEffect(() => {
     const fetchDeviceOptions = async () => {
       try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/device-configs');
+        const response = await client.get('/device-configs');
         setDeviceOptions(response.data.name);
       } catch (error) {
         console.error('Error fetching guidance levels:', error);
@@ -102,10 +104,11 @@ const NewScan = ({ isOpen, toggle }) => {
         device_config: formData.get('device'),
         depth: formData.get('depth'),
         guidance: selectedGuidances,
+        steps: createdSteps,
       };
 
       // send the scan request to MongoDB endpoint
-      await axios.post('https://deliverable3.marcomarchesano.com:3000/scan', scanRequest);
+      await client.post('/create-scan', scanRequest);
       toggle(); // close the modal after submission
     } catch (error) {
       console.error('Error submitting scan request:', error);
@@ -204,7 +207,7 @@ const NewScan = ({ isOpen, toggle }) => {
                     <Button color="success" onClick={openStep} className="mr-2 m-1">
                       <Icon icon='plus' color='white' /> New
                     </Button>
-                    <StepDetails isOpen={isStepDetailsOpen} toggle={toggleStepDetails} />
+                    <StepDetails isOpen={isStepDetailsOpen} toggle={(toggleStepDetails)} setCreatedSteps={setCreatedSteps} />
                     <Button color="primary" className='m-1'>
                       <Icon icon='export' color='white' /> Export
                     </Button>
@@ -213,19 +216,27 @@ const NewScan = ({ isOpen, toggle }) => {
                   <Table bordered hover size="sm" className='m-2'>
                     <thead>
                       <tr>
-                        <th>Element</th>
-                        <th>FindType</th>
+                        <th>Element Type</th>
+                        <th>FindBy</th>
                         <th>FindValue</th>
-                        <th>Value</th>
                         <th>Action</th>
                         <th>WaitTime</th>
-                        <th>RunScan</th>
                         <th>IsActive</th>
                         <th>Notes</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {/* Render table rows here */}
+                      {createdSteps.map((step) => (
+                        <tr key={step.url}>
+                          <td>{step.elemType}</td>
+                          <td>{step.findBy}</td>
+                          <td>{step.findValue}</td>
+                          <td>{step.stepAction}</td>
+                          <td>{step.waitTime}</td>
+                          <td>{step.isActive}</td>
+                          <td>{step.notes}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </Table>
                 </CardBody>

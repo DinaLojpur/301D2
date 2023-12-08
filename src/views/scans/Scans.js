@@ -18,12 +18,12 @@ import {
     // PaginationLink
 } from 'reactstrap';
 import { Icon } from '@blueprintjs/core';
-import {useAxios} from "../../utils/AxiosProvider";
 import NewScan from './NewScan';
 import RunScan from './RunScan';
 import ScheduleScan from './ScheduleScan';
 import ComponentCard from '../../components/ComponentCard';
 import DeleteScan from './DeleteScan';
+import {useAxios} from "../../utils/AxiosProvider";
 
 
 

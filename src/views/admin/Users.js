@@ -13,7 +13,7 @@ import {
 import { Icon } from '@blueprintjs/core';
 import NewUser from './NewUser';
 import ComponentCard from '../../components/ComponentCard';
-import {useAxios} from "../../utils/AxiosProvider";
+import { useAxios } from "../../utils/AxiosProvider";
 
 
 const Users = () => {

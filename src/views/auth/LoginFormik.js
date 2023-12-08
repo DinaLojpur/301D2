@@ -28,22 +28,22 @@ const LoginFormik = () => {
       .required('Password is required'),
   });
 
-  const handleLogin = () => {
-    console.log('test')
+  const handleLogin = async () => {
     setLoading(true);
-    client.post(
+    try {
+      const response = await client.post(
         '/login',
         credentials
-    ).then(({ data }) => {
+      );
       setLoading(false);
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
       window.location.href = "/dashboards/crypto";
-    }).catch((err) => {
+    } catch (err) {
       setLoading(false);
       console.log(err)
       errorNotification("Error: ", err.response.data);
-    });
+    }
   };
 
   return (

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
-import axios from 'axios';
 import { Row, Col, Input } from 'reactstrap';
 import DashCard from '../dashboardCards/DashCard';
+import {useAxios} from "../../../utils/AxiosProvider";
 
 const CryptoChart = () => {
   //Line chart
   const [monthlyScans, setMonthlyScans] = useState([]);
+  const client = useAxios();
 
   useEffect(() => {
     const fetchScanData = async () => {
       try {
-        const response = await axios.get('https://deliverable3.marcomarchesano.com:3000/scan_request'); // replace with actual endpoint
+        const response = await client.get('/scan_request'); // replace with actual endpoint
         const scans = response.data;
 
         // process scans data to count scans for each month

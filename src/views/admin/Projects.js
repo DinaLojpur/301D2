@@ -25,7 +25,7 @@ const Projects = () => {
     const fetchProjects = async () => {
       try {
         const response = await client.get('/projects');
-        SetProjects(response.data);
+        SetProjects(response.data.reverse());
       } catch (error) {
         console.error('Error fetching Projects:', error);
       }
@@ -70,7 +70,7 @@ const Projects = () => {
                 {projects.map((project) => (
                     <tr>
                       <td>{project.name}</td>
-                      <td>{project.active}</td>
+                      <td>{project.active ? "Yes" : "No"}</td>
                     </tr>
                 ))}
                 </tbody>

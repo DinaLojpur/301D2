@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Card, CardBody, Input, Label, FormGroup, Row, Col } from 'reactstrap';
 import 'react-datepicker/dist/react-datepicker.css';
+import {useAxios} from "../../utils/AxiosProvider";
 
+/* eslint-disable no-underscore-dangle */
 
-const RunScan = ({ isOpen, toggle }) => {
+const RunScan = ({ isOpen, toggle, selectedScan }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [urls, setUrls] = useState([]);
+  const client = useAxios();
+
+  useEffect(() => {
+    try {
+      if (selectedScan && selectedScan.urls) {
+        setUrls(selectedScan.urls);
+      }
+      else {
+        setUrls([]);
+      }
+    } catch (error) {
+      console.error('Error fetching URLs:', error);
+    }
+  }, [selectedScan]);
 
   const handleCheckboxChange = (event, itemName) => {
     const { checked } = event.target;
     if (itemName === 'Select All') {
       setSelectAll(checked);
-      setSelectedItems(checked ? ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7'] : []);
+      setSelectedItems(checked ? urls : []);
     } else {
       const updatedItems = checked
         ? [...selectedItems, itemName]
@@ -21,9 +38,25 @@ const RunScan = ({ isOpen, toggle }) => {
     }
   };
 
+  const handleSubmit = async () => {
+    try {
+      const scan = {
+        scanRequestId: selectedScan._id,
+        urls: selectedItems,
+        device: selectedScan.device,
+      };
+      // send the scan info to MongoDB endpoint
+      await client.post('/run-scan', scan);
+      toggle(); // close the modal after submission
+    } catch (error) {
+      console.error('Error running scan:', error);
+    }
+  };
+
+
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg" centered backdrop="static">
-      <ModalHeader>Run Scan (Coming in D5)</ModalHeader>
+      <ModalHeader>Run Scan</ModalHeader>
       <ModalBody>
         <Row>
           <Col md="6">
@@ -40,15 +73,15 @@ const RunScan = ({ isOpen, toggle }) => {
                     All
                   </Label>
                 </FormGroup>
-                {['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7'].map((item) => (
-                  <FormGroup check key={item}>
+                {urls.map((url) => (
+                  <FormGroup check key={url}>
                     <Label check>
                       <Input
                         type="checkbox"
-                        checked={selectedItems.includes(item)}
-                        onChange={(e) => handleCheckboxChange(e, item)}
+                        checked={selectedItems.includes(url)}
+                        onChange={(e) => handleCheckboxChange(e, url)}
                       />{' '}
-                      {item}
+                      {url}
                     </Label>
                   </FormGroup>
                 ))}
@@ -72,7 +105,7 @@ const RunScan = ({ isOpen, toggle }) => {
         </Row>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={toggle}>
+        <Button color="primary" onClick={handleSubmit}>
             Start Scan
         </Button>{' '}
         <Button color="secondary" onClick={toggle}>
@@ -86,6 +119,7 @@ const RunScan = ({ isOpen, toggle }) => {
 RunScan.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
+  selectedScan: PropTypes.object.isRequired,
 };
 
 export default RunScan;

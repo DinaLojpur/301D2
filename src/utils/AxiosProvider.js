@@ -30,7 +30,6 @@ export const AxiosProvider = ({ children }) => {
                 return response;
             },
             async (error) => {
-                console.log("errored out")
                 if (error.response) {
                     const { status, data } = error.response;
 
@@ -38,7 +37,6 @@ export const AxiosProvider = ({ children }) => {
                         case 401:
                             if (data === "Authentication Error: jwt expired") {
                                 try {
-                                    console.log('attempting to refresh token')
                                     // attempting to refresh token;
                                     await refreshToken();
                                     // token refreshed, reattempting request;

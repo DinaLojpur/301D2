@@ -4,7 +4,7 @@ import axios from 'axios';
 const { storeExpiry, read } = require('./LocalStorageEncryption');
 
 const AxiosContext = createContext();
-const baseUrl = process.env.REACT_API_URL || 'http://localhost:3000';
+const baseUrl = process.env.REACT_API_URL || 'http://mollypro.us-east-2.elasticbeanstalk.com/';
 
 // eslint-disable-next-line react/prop-types
 export const AxiosProvider = ({ children }) => {

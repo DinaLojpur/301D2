@@ -22,9 +22,7 @@
     "plugin:react-hooks/recommended"
   ],
   "plugins": [
-    "prettier",
     "react",
-    "react-hooks"
   ],
   "parser": "",
   "rules": {

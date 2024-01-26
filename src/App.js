@@ -1,5 +1,4 @@
-/* eslint-disable import/no-named-as-default */
-/* eslint-disable import/no-named-as-default-member */
+
 import React, { Suspense } from 'react';
 import { useRoutes } from 'react-router-dom';
 import { useSelector } from 'react-redux';

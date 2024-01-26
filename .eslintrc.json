@@ -16,5 +16,8 @@
     "rules": {
         "import/no-named-as-default": 0,
         "import/no-named-as-default-member": 0
+        //"plugin:react/jsx-runtime": "extends"
+       // "react/react-in-jsx-scope": "off",
+       // "react/jsx-uses-react": "off"
     }
 }

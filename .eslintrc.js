@@ -28,6 +28,9 @@ module.exports = {
         "react"
     ],
     "rules": {
-        "import/no-named-as-default": "off"
+        "import/no-named-as-default": 0,
+        //"import/no-named-as-default-member": 0
+       // "react/react-in-jsx-scope": "off",
+       // "react/jsx-uses-react": "off"
     }
 }

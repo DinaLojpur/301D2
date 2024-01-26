@@ -10,6 +10,6 @@
         "sfo1"
     ],
     "rewrites": [
-        {"source": "/(.*)", "destination": "/"}
+        {"source": "/(.*)", "destination": "/index.js"}
     ]
 }

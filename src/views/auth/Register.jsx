@@ -62,7 +62,6 @@ export default function Register() {
                     <Form.Item name="first_name" label="First Name">
                     <Input
                         required
-                        autoFocus
                         placeholder="Enter your first name"
                         maxLength={50}
                     />
@@ -71,7 +70,6 @@ export default function Register() {
                     <Form.Item name="last_name" label="Last Name">
                     <Input
                         required
-                        autoFocus
                         placeholder="Enter your last name"
                         maxLength={50}
                     />
@@ -80,7 +78,6 @@ export default function Register() {
                     <Form.Item name="username" label="Username">
                     <Input
                         required
-                        autoFocus
                         placeholder="Enter your username"
                         maxLength={50}
                     />

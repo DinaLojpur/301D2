@@ -28,6 +28,6 @@ module.exports = {
         "react"
     ],
     "rules": {
-        "import/prefer-default-export": "off"
+        "import/no-named-as-default": "off"
     }
 }

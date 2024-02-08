@@ -12,7 +12,7 @@ import {AxiosProvider} from "./utils/AxiosProvider";
 
 const token = localStorage.getItem("TOKEN");
 const uploadLink = createUploadLink({
-  uri: process.env.REACT_APP_API_URL || "http://localhost:4000",
+  uri: process.env.REACT_APP_API_URL || "http://localhost:3000",
   headers: {
     "keep-alive": "true",
     Authorization: token ? `Bearer ${token}` : ""

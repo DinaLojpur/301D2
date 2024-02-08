@@ -6,7 +6,6 @@ phases:
       nodejs: 18
   pre_build:
     commands:
-      - cd molyreporter-frontend
       - echo Installing source NPM dependencies...
       - npm install
   build:
@@ -18,5 +17,5 @@ artifacts:
   files:
     - '**/*'
     #- "my-app/build/**/*"
-  base-directory: 'molyreporter-frontend/build'
+  base-directory: 'build'
   #discard-paths: yes

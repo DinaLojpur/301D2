@@ -11,7 +11,7 @@ export const AxiosProvider = ({ children }) => {
     const axiosInstance = axios.create({
         baseURL: baseUrl,
         headers: {"Content-Type": "application/json",
-                  "Origin":"testmollyprodev.s3-website.us-east-2.amazonaws.com"}
+                  "Origin":"http://testmollyprodev.s3-website.us-east-2.amazonaws.com"}
     });
 
     async function refreshToken() {

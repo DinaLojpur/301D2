@@ -10,7 +10,8 @@ const baseUrl = process.env.REACT_API_URL || 'http://molyreporter-dev1-env.eba-b
 export const AxiosProvider = ({ children }) => {
     const axiosInstance = axios.create({
         baseURL: baseUrl,
-        headers: {"Content-Type": "application/json"}
+        headers: {"Content-Type": "application/json",
+                  "Origin":"testmollyprodev.s3-website.us-east-2.amazonaws.com"}
     });
 
     async function refreshToken() {

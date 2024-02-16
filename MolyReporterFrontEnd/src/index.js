@@ -9,6 +9,7 @@ import { store } from './store/Store';
 import App from './App';
 import './data';
 import {AxiosProvider} from "./utils/AxiosProvider";
+import { UserProvider } from './views/profile/UserContext';
 
 const token = localStorage.getItem("TOKEN");
 const uploadLink = createUploadLink({
@@ -30,9 +31,11 @@ root.render(
   <Provider store={store}>
     <ApolloProvider client={client}>
       <AxiosProvider>
+        <UserProvider>
         <BrowserRouter>
           <App />
         </BrowserRouter>
+        </UserProvider>
       </AxiosProvider>
     </ApolloProvider>
   </Provider>,

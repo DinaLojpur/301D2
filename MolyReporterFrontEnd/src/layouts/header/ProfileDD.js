@@ -5,10 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import user1 from '../../assets/images/users/user1.jpg';
 
 const ProfileDD = () => {
-  const navigate = useNavigate(); // Get the navigation function
+  const navigate = useNavigate();
 
   const goToTabs = () => {
     navigate('/ui/tabs'); // Navigate to the Tabs page when the "Settings" option is clicked
+  };
+  const goToProfile = () => {
+    navigate('/profile/ViewProfile');
   };
 
   return (
@@ -20,11 +23,11 @@ const ProfileDD = () => {
           <small>info@wrappixel.com</small>
         </span>
       </div>
-      <DropdownItem className="px-4 py-3">
+      <DropdownItem className="px-4 py-3" onClick={goToProfile}>
         <User size={20} />
         &nbsp; My Profile
       </DropdownItem>
-      <DropdownItem className="px-4 py-3">
+      <DropdownItem className="px-4 py-3" onClick={goToTabs}>
         <FileText size={20} />
         &nbsp; Edit Profile
       </DropdownItem>

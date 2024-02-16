@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { DropdownItem } from 'reactstrap';
 import { User, FileText, Star, Settings, Droplet } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import user1 from '../../assets/images/users/user1.jpg';
+import UserContext from '../../views/profile/UserContext';
 
 const ProfileDD = () => {
   const navigate = useNavigate();
+  const { mockUserData } = useContext(UserContext);
+  const [userData, setUserData] = useState(mockUserData)
 
   const goToTabs = () => {
     navigate('/ui/tabs'); // Navigate to the Tabs page when the "Settings" option is clicked
@@ -14,13 +17,17 @@ const ProfileDD = () => {
     navigate('/profile');
   };
 
+  useEffect(() => {
+    setUserData(mockUserData);
+  }, [mockUserData]);
+
   return (
     <div>
       <div className="d-flex gap-3 p-3 border-bottom pt-2 align-items-center">
-        <img src={user1} alt="user" className="rounded-circle" width="60" />
+        <img src={userData.photo} alt="user" className="rounded-circle" width="60" />
         <span>
-          <h6 className="mb-0">John Deo</h6>
-          <small>info@wrappixel.com</small>
+          <h6 className="mb-0">{userData.first_name + ' ' + userData.last_name}</h6>
+          <small>{userData.email}</small>
         </span>
       </div>
       <DropdownItem className="px-4 py-3" onClick={goToProfile}>

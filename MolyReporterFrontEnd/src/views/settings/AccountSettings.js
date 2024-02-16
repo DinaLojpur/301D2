@@ -2,10 +2,22 @@ import React, { useState } from 'react';
 import { Button, Input, Form, FormGroup, Label, Container, Col } from 'reactstrap';
 import { notification } from 'antd';
 
-const AccountSettingsComponent = () => {
+const AccountSettingsComponent = ({ updatePasswordRequirements }) => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "password") {
+      setPassword(value);
+    } else if (name === "newPassword") {
+      setNewPassword(value);
+    } else if (name === "confirmPassword") {
+      setConfirmPassword(value);
+    }
+    updatePasswordRequirements(value);
+  };
 
   const updatePassword = () => {
     if (password.trim() === '' || newPassword.trim() === '' || confirmPassword.trim() === '') {
@@ -45,8 +57,9 @@ const AccountSettingsComponent = () => {
                     <Col sm="8">
                         <Input
                         type="password"
+                        name="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handlePasswordChange}
                         id="txtPassword"
                         />
                     </Col>
@@ -56,8 +69,9 @@ const AccountSettingsComponent = () => {
                     <Col sm="8">
                         <Input
                         type="password"
+                        name="newPassword"
                         value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
+                        onChange={handlePasswordChange}
                         id="txtNewPassword"
                         />
                     </Col>
@@ -67,8 +81,9 @@ const AccountSettingsComponent = () => {
                     <Col sm="8">
                         <Input
                         type="password"
+                        name="confirmPassword"
                         value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        onChange={handlePasswordChange}
                         id="txtConfirmPassword"
                         />
                     </Col>

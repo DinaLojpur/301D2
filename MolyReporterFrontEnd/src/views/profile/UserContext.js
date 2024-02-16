@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import img1 from '../../assets/images/users/user1.jpg';
 
 const UserContext = createContext();
 
@@ -15,6 +16,7 @@ export const UserProvider = ({ children }) => {
         number_of_scans: '25',
         position: 'Accessibility Tester',
         since: '2017',
+        photo: img1
     });
 
     const updateUser = (newUserData) => {

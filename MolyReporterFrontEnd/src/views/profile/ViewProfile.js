@@ -19,7 +19,6 @@ import {
 } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 
-import img1 from '../../assets/images/users/user1.jpg';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -51,7 +50,7 @@ useEffect(() => {
           <Card>
             <CardBody className="p-4">
               <div className="text-center mt-4">
-                <img src={img1} className="rounded-circle" width="150" alt="" />
+                <img src={userData.photo} className="rounded-circle" width="150" alt="" />
                 <CardTitle tag="h4" className="mt-2 mb-0">
                 {userData.first_name + ' ' + userData.last_name}
                 </CardTitle>

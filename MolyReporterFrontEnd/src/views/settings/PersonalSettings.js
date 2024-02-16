@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Row,
@@ -14,22 +14,24 @@ import UserContext from '../profile/UserContext';
 
 const PersonalSettingsComponent = () => {
     const { mockUserData, updateUser } = useContext(UserContext);
-
-    const [images, setImages] = useState([]);
-    const [imageURLs, setImageURLs] = useState([]);
     const [firstName, setFirstName] = useState(mockUserData.first_name);
-    const [display, setDisplay] = useState(mockUserData.username);
+    const [username, setUsername] = useState(mockUserData.username);
     const [lastName, setLastName] = useState(mockUserData.last_name);
     const [email, setEmail] = useState(mockUserData.email);
+    const [phone, setPhone] = useState(mockUserData.phone);
     const [timeZone, setTimeZone] = useState(mockUserData.timezone || '');
+    const [profilePic, setProfilePic] = useState(mockUserData.photo);
     
       const handleSubmit = (e) => {
         e.preventDefault();
         const updatedUserData = { 
             ...mockUserData, 
             first_name: firstName, 
-            last_name: lastName, 
-            email: email, 
+            last_name: lastName,
+            username: username, 
+            email: email,
+            phone: phone,
+            photo: profilePic,
             timezone: timeZone 
         };
         updateUser(updatedUserData);
@@ -39,20 +41,25 @@ const PersonalSettingsComponent = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         switch(name) {
-          case 'first-name':
+            case 'first-name':
             setFirstName(value);
             break;
           case 'last-name':
             setLastName(value);
             break;
-          case 'display-name':
-            setDisplay(value);
+          case 'username':
+            setUsername(value);
             break;
           case 'email':
             setEmail(value);
             break;
+          case 'phone':
+            setPhone(value);
+            break;
           default:
             break;
+
+          
         }
     };
 
@@ -61,15 +68,11 @@ const PersonalSettingsComponent = () => {
     };
 
     const onImageChange = (e) => {
-        setImages([...e.target.files]);
+        const file = e.target.files[0];
+        const imageURL = URL.createObjectURL(file);
+        setProfilePic(imageURL);
     };
 
-    useEffect(() => {
-        if (images.length < 1) return;
-        const newImageUrls = [];
-        images.forEach(image => newImageUrls.push(URL.createObjectURL(image)));
-        setImageURLs(newImageUrls);
-    }, [images]);
 
     const timeZoneOptions = moment.tz.names().map((zone) => {
         const abbreviation = moment.tz(zone).format('z');
@@ -86,21 +89,18 @@ const PersonalSettingsComponent = () => {
                     <Row> 
                         <Row>
                             <Col>
-                            {imageURLs.map((imageSrc, index) => (
                             <img
-                                key={index}
-                                src={imageSrc}
-                                alt={`profile-pic-${index}`}
+                                src={profilePic}
+                                alt={`profile-pic`}
                                 style={{ width: '100px', height: '100px', margin: '5px' }}
                             />
-                            ))}
                             </Col>
                         </Row>
                         <Col>
                             <FormGroup controlId="file" className='mb-3'>
                                 <Label>Profile Picture</Label>
                                 <div className="m-0">
-                                    <input type="file" accept="image/*" onChange={onImageChange}/>
+                                    <input name="photo" type="file" accept="image/*" onChange={onImageChange}/>
                                 </div>
                             </FormGroup>
                         </Col>
@@ -134,9 +134,9 @@ const PersonalSettingsComponent = () => {
                             <FormGroup className='mb-3' controlId="formBasicEmail">
                                 <Label>Display Name</Label>
                                 <input
-                                    name="display-name"
+                                    name="username"
                                     type="text"
-                                    value={display}
+                                    value={username}
                                     className="form-control"
                                     onChange={handleInputChange}
                                 />
@@ -151,6 +151,18 @@ const PersonalSettingsComponent = () => {
                                     name="email"
                                     type="text"
                                     value={email}
+                                    className="form-control"
+                                    onChange={handleInputChange}
+                                />
+                            </FormGroup>
+                        </Col>
+                        <Col>
+                            <FormGroup className='mb-3' controlId="formBasicEmail">
+                                <Label>Phone</Label>
+                                <input
+                                    name="phone"
+                                    type="text"
+                                    value={phone}
                                     className="form-control"
                                     onChange={handleInputChange}
                                 />

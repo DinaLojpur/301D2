@@ -114,6 +114,9 @@ const Documentation = Loadable(lazy(() => import('../views/help/Documentation'))
 const Projects = Loadable(lazy(() => import('../views/admin/Projects')));
 const Users = Loadable(lazy(() => import('../views/admin/Users')));
 
+/***** Profile Pages ****/
+const UserProfile = Loadable(lazy(() => import('../views/profile/ViewProfile')));
+
 /*****Routes******/
 
 const ThemeRoutes = [
@@ -122,6 +125,12 @@ const ThemeRoutes = [
     element: <FullLayout />,
     children: [
       { path: '/', name: 'Home', element: <Navigate to="/auth/login" /> },
+
+      
+      // this is a new path we have created
+      { path: '/profile', element: <UserProfile /> },
+
+
       { path: '/dashboards/classic', name: 'Classic', exact: true, element: <Classic /> },
       { path: '/dashboards/crypto', name: 'Classic', exact: true, element: <Crypto /> },
       { path: '/dashboards/ecommerce', name: 'ecommerce', exact: true, element: <Ecommerce /> },

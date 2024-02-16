@@ -11,7 +11,7 @@ const ProfileDD = () => {
     navigate('/ui/tabs'); // Navigate to the Tabs page when the "Settings" option is clicked
   };
   const goToProfile = () => {
-    navigate('/profile/ViewProfile');
+    navigate('/profile');
   };
 
   return (

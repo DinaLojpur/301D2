@@ -5,7 +5,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [mockUserData, setMockUserData] = useState({
         id: 1,
-        first_name: 'Selin',
+        first_name: 'John',
         last_name: 'Doe',
         email: 'john.doe@example.com',
         phone: '+1234567890',
